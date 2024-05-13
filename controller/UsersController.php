@@ -2,9 +2,9 @@
 
 class UsersController
 {
-    public function edit()
+    public function edit($id)
     {
-        echo "cheguei user";
+        echo "cheguei user". $id[0];
     }
 }
     
