@@ -1,10 +1,12 @@
 <?php
 
-class UsersController
+class UsersController extends RenderView
 {
     public function edit($id)
     {
-        echo "cheguei user". $id[0];
+        $users = new User();
+
+        $this->render('a',[]);
     }
 }
     
