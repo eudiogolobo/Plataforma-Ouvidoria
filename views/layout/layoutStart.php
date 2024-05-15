@@ -135,14 +135,14 @@ function elementFocus(idInputFocus)
 }
 
 //funcao para validar os campos do formulário
-function validField(idField, personalizedName)
+function validField(idField, personalizedName,modalId)
 {
   // se o valor do campo com o id que foi passado for vazio 
   // ele chama o modal do type error e adddiciona as classes is-invalid no input 
   // e na div da mensagem em baixo do input dai retorna false
   if($('#'+idField+'').val() == '')
         {
-          showModalMesage('error','Campo inválido', 'Campo obrigatório '+personalizedName+' em branco','modal-create-account',idField); 
+          showModalMesage('error','Campo inválido', 'Campo obrigatório '+personalizedName+' em branco',modalId,idField); 
           $('#'+idField).removeClass('is-valid')
           $('#validation-'+idField).removeClass('is-valid')
 
@@ -174,7 +174,7 @@ function validatorModalCreateAccount()
 
         // chama a função validFiel para ver se o campo está em branco e se retornar 
         // false retorna true saindo da função de salvar
-        if(validField('name','nome') == false || validField('date-birth','data de nascimento') == false || validField('telephone','telefone') == false || validField('whatsapp','whatsapp') == false || validField('email','e-mail') == false || validEmail('email') == false || validField('city', 'cidade') == false)
+        if(validField('name','nome','modal-create-account') == false || validField('date-birth','data de nascimento','modal-create-account') == false || validField('telephone','telefone','modal-create-account') == false || validField('whatsapp','whatsapp','modal-create-account') == false || validField('email','e-mail','modal-create-account') == false || validEmail('email','modal-create-account') == false || validField('fu', 'UF','modal-create-account') == false || validField('city', 'cidade','modal-create-account') == false)
         {
           return false
         }
@@ -308,11 +308,23 @@ function validatorModalCreateAccount()
   
   $('#btn-create-user').click(function(){
 
+    if(validField('password','senha','modal-create-password') == false || validField('password-comnfirm','confirmação de senha','modal-create-password') == false){
+      return
+    }
 
 
     if( $('#password').val().length < 8)
     {
-      
+      showModalMesage('error','Senha inválida','A senha deve ter no mínimo 8 caracteres.','modal-create-password');
+      $('#password').focus()
+      return
+    }
+
+    if( $('#password').val() != $('#password-comnfirm').val())
+    {
+      showModalMesage('error','Senha inválida','A senha e a confirmação de senha não são iguais.','modal-create-password');
+      $('#password').focus()
+      return
     }
 
     dataUser = {

@@ -1,6 +1,8 @@
 <?php
 include_once "../configuration/connect.php";
 
+$database = new Database();
+
 $name = $_POST['name'];
 $dateBirth = $_POST['date-birth'];
 $email = $_POST['email'];
@@ -11,24 +13,23 @@ $passwordComnfirm = $_POST['password_comnfirm'];
 $city = $_POST['city'];
 $fu = $_POST['fu'];
 
-echo "oi 1";
-$confirmEmail = $connection->query("SELECT * FROM users where email = '$email'");
+
+$confirmEmail = $database->pdo->query("SELECT * FROM users where email = '$email'");
 $data = $confirmEmail->fetchAll(PDO::FETCH_ASSOC);
 
-echo "oi 2";
+
 
 if((count($data)) <= 0)
 {
-    $result = $connection->prepare('INSERT INTO users (date_birth, email, telephone, whatsapp, 
+    $result = $database->pdo->prepare('INSERT INTO users (date_birth, email, telephone, whatsapp, 
     password, password_confirmation,name, city, fu) values ( :date_birth, :email, :telephone, :whatsapp, 
     :password, :password_comnfirmation, :name , :city, :fu)');
-echo "oi 3";
 
     $result->bindValue(":date_birth", $dateBirth);
     $result->bindValue(":email", $email);
     $result->bindValue(":telephone", $telephone);
     $result->bindValue(":whatsapp", $whatsapp);
-    $result->bindValue(":password", $password);
+    $result->bindValue(":password", hash('sha256', $password));
     $result->bindValue(":password_comnfirmation", $passwordComnfirm);
     $result->bindValue(":name", $name);
     $result->bindValue(":city", $city);
