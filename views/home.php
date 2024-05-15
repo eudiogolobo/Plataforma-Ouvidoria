@@ -1,6 +1,6 @@
 <?php require_once __DIR__ ."/layout/layoutStart.php";
 
-print_r($data);
+
 
 ?>
 

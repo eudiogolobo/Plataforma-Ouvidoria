@@ -11,10 +11,12 @@
 
     <!-- CDN jQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <!-- CDN mask -->
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery.maskedinput/1.4.1/jquery.maskedinput.min.js"></script>
 
+    <link rel="stylesheet" href="../public/css/layout.css">
 
     <title><?=$title?></title>
 </head>
@@ -210,7 +212,7 @@ function validatorModalCreateAccount()
     $(document).ready(()=>{
 
          //pego o arquivo json com as cidades e UF
-        $.getJSON("public/json/cities_states.json", (data) => {
+        $.getJSON("../public/json/cities_states.json", (data) => {
 
         // crio um array
         let items = [];
@@ -302,8 +304,16 @@ function validatorModalCreateAccount()
       }
   })
 
-  $('#btn-create-user').click(()=>{
-    console.log('click')
+ 
+  
+  $('#btn-create-user').click(function(){
+
+
+
+    if( $('#password').val().length < 8)
+    {
+      
+    }
 
     dataUser = {
       'name':$('#name').val(),
@@ -317,27 +327,23 @@ function validatorModalCreateAccount()
       'fu': $('#fu').val(),
 
     }
+
     $.ajax({
-             //url da pagina
-             url: 'stores/createUser.php',
-             //url: $("#baseURL").val()+'/views/romaneio/tes.php',
-             //parametros a passar
-             data: dataUser,
-             //tipo: POST ou GET
-             dataType: 'text',
-             type: 'POST',
-             //cache
-             cache: false,
-             success: function(data){
-                 console.log(data)
-             },
-             error:function(data)
-             {
-              console.log('ERRO:  '+data)
-             },
+          type: "POST",
+          url: "../stores/createUser.php",
+          data: dataUser,
+          success: function(data) {
+            // Coloque aqui as instruções para fechar o dialog
+            alert('sucesso')
+          },
+          error: function(request, status, error) {
+            // Aqui você trata um erro que possa vir a ocorrer
+            // Exemplo:
+            alert("Erro: " + request.responseText);
+          }
+        });
 
-
-             })
+ 
   })
 
        
@@ -371,7 +377,7 @@ function validatorModalCreateAccount()
 <!-- COMEÇO NAVBAR -->
 <nav class="navbar navbar-expand-lg bg-primary border-body sticky-top" data-bs-theme="dark">
   <div class="container-fluid">
-  <a class="navbar-brand" href="{{route('main.index')}}"><img height="30px" src="{{asset('img/LabMaker.svg')}}" alt=""></a>
+  <a class="navbar-brand" href="{{route('main.index')}}"><img height="30px" src="#" alt=""></a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
