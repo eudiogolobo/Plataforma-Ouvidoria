@@ -15,8 +15,6 @@
     <!-- CDN mask -->
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery.maskedinput/1.4.1/jquery.maskedinput.min.js"></script>
 
-    <link rel="stylesheet" href="public/css/teste.css">">
-
 
     <title><?=$title?></title>
 </head>
@@ -135,14 +133,14 @@ function elementFocus(idInputFocus)
 }
 
 //funcao para validar os campos do formulário
-function validField(idField, personalizedName,modalValue)
+function validField(idField, personalizedName)
 {
   // se o valor do campo com o id que foi passado for vazio 
   // ele chama o modal do type error e adddiciona as classes is-invalid no input 
   // e na div da mensagem em baixo do input dai retorna false
   if($('#'+idField+'').val() == '')
         {
-          showModalMesage('error','Campo inválido', 'Campo obrigatório '+personalizedName+' em branco',modalValue,idField); 
+          showModalMesage('error','Campo inválido', 'Campo obrigatório '+personalizedName+' em branco','modal-create-account',idField); 
           $('#'+idField).removeClass('is-valid')
           $('#validation-'+idField).removeClass('is-valid')
 
@@ -174,7 +172,7 @@ function validatorModalCreateAccount()
 
         // chama a função validFiel para ver se o campo está em branco e se retornar 
         // false retorna true saindo da função de salvar
-        if(validField('name','nome','modal-create-account') == false || validField('date-birth','data de nascimento','modal-create-account') == false || validField('telephone','telefone','modal-create-account') == false || validField('whatsapp','whatsapp','modal-create-account') == false || validField('email','e-mail','modal-create-account') == false || validEmail('email') == false || validField('fu', 'UF','modal-create-account') == false || validField('city', 'cidade','modal-create-account') == false)
+        if(validField('name','nome') == false || validField('date-birth','data de nascimento') == false || validField('telephone','telefone') == false || validField('whatsapp','whatsapp') == false || validField('email','e-mail') == false || validEmail('email') == false || validField('city', 'cidade') == false)
         {
           return false
         }
@@ -295,7 +293,7 @@ function validatorModalCreateAccount()
 
             })
 
-  // chama a funcao para validar e ir ao prixmo modalde criação de senha
+  // chama a funcao para validar e ir ao prixmo modal
   $('#btn-prox-modal-create-account').click(()=>{
       if(validatorModalCreateAccount())
       {
@@ -304,28 +302,42 @@ function validatorModalCreateAccount()
       }
   })
 
+  $('#btn-create-user').click(()=>{
+    console.log('click')
 
-   $('#password').change(function(){
+    dataUser = {
+      'name':$('#name').val(),
+      'date-birth': $('#date-birth').val(),
+      'email': $('#email').val(),
+      'telephone': $('#telephone').val(),
+      'whatsapp': $('#whatsapp').val(),
+      'password': $('#password').val(),
+      'password_comnfirm': $('#password-comnfirm').val(),
+      'city': $('#city').val(),
+      'fu': $('#fu').val(),
 
-   
+    }
+    $.ajax({
+             //url da pagina
+             url: 'stores/createUser.php',
+             //url: $("#baseURL").val()+'/views/romaneio/tes.php',
+             //parametros a passar
+             data: dataUser,
+             //tipo: POST ou GET
+             dataType: 'text',
+             type: 'POST',
+             //cache
+             cache: false,
+             success: function(data){
+                 console.log(data)
+             },
+             error:function(data)
+             {
+              console.log('ERRO:  '+data)
+             },
 
-   })
- 
 
-    // chama a funcao para validar e cadastrar
-    $('#btn-create-user').click(()=>{
-     
-        if( validField('password','senha','modal-create-password') == false || validField('password-comnfirm','confirmação de senha','modal-create-password') == false)
-        {
-            return
-        }
-
-      
-        //if($('#password').val().lenght < 8)
-        //{}
-
-       
-    
+             })
   })
 
        
@@ -334,8 +346,8 @@ function validatorModalCreateAccount()
    
 
 </script>
-<button data-bs-toggle="modal" data-bs-target="#modal-create-password">aqui</button>
-
+<button data-bs-target="#modal-create-password" data-bs-toggle="modal">anda</button>
+<button data-bs-target="#modal-list-ouvidoria" data-bs-toggle="modal">anda</button>
 <!-- COMEÇO Modal de mensagens/ avisos-->
 <div class="modal fade modal-sm"  id="modal-mesage" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
   <div class="modal-dialog  modal-dialog-centered">
@@ -446,6 +458,7 @@ function validatorModalCreateAccount()
         </div>
       </div>
       <div class="modal-footer">
+        <button type="button" onmouseleave="" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
         <button id="btn-prox-modal-create-account" type="button" class="btn btn-primary">Próximo</button>
       </div>
     </div>
@@ -455,7 +468,7 @@ function validatorModalCreateAccount()
 
 <!-- COMEÇO DE CRIAÇÃO DE SENHA -->
 <div class="modal fade modal-pq" id="modal-create-password" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
-  <div class="modal-dialog ">
+  <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <h1 class="modal-title fs-5">Cadastre-se 2/2</h1> 
@@ -464,20 +477,14 @@ function validatorModalCreateAccount()
       <div class="modal-create-password-body">
           <div class="content p-4 row g-3">
               <div class="row justify-content-md-center mt-3"> 
-                <div class="col-md-9">
+                <div class="col-md-7">
                     <label for="password" class="form-label">Senha</label>
                     <input type="text" class="form-control" id="password" name="password" placeholder="Senha">
                     <div id="validation-password"></div>
-                    <ul id="ul-password" style="list-style: none;">
-                      <li>A senha deve ter um caracter especial.</li>
-                      <li>A senha deve ter uma letra maiúscula.</li>
-                      <li>A senha deve ter no mínimo 8 dígistos.</li>
-
-                    </ul>
                 </div>
               </div>
               <div class="row justify-content-md-center mt-3"> 
-                  <div class="col-md-9">
+                  <div class="col-md-7">
                       <label for="password_comnfirm" class="form-label">Confirm sua senha</label>
                       <input type="text" class="form-control" id="password-comnfirm" name="password-comnfirm" placeholder="Confirme a senha">
                       <div id="validation-password-comnfirm"></div>
@@ -487,7 +494,7 @@ function validatorModalCreateAccount()
           </div>
       </div>
       <div class="modal-footer">
-        <button type="button" onmouseleave="" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modal-create-account">Voltar</button>
+        <button type="button" onmouseleave="" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
         <button id="btn-create-user" type="button" class="btn btn-primary">Enviar</button>
       </div>
     </div>
