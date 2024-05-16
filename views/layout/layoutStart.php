@@ -130,7 +130,9 @@ function elementFocus(idInputFocus)
 {
   setTimeout(()=>{
     $('#'+idInputFocus).focus()
-  }, 500)
+    $('#'+idInputFocus).removeClass('is-valid')
+    $('#'+idInputFocus).addClass('is-invalid')
+  }, 300)
 
 }
 
@@ -308,6 +310,7 @@ function validatorModalCreateAccount()
   
   $('#btn-create-user').click(function(){
 
+
     if(validField('password','senha','modal-create-password') == false || validField('password-comnfirm','confirmação de senha','modal-create-password') == false){
       return
     }
@@ -344,14 +347,16 @@ function validatorModalCreateAccount()
           type: "POST",
           url: "../stores/createUser.php",
           data: dataUser,
-          success: function(data) {
+          success: function() {
             // Coloque aqui as instruções para fechar o dialog
-            alert('sucesso')
+            showModalMesage('success','Parabéns!','Seu cadastro foi realizado com sucesso! Logo, enviaremos um código de verificção no seu e-mail para ativação da conta.')
           },
-          error: function(request, status, error) {
+          error: function(response) {
             // Aqui você trata um erro que possa vir a ocorrer
             // Exemplo:
-            alert("Erro: " + request.responseText);
+            console.log(response)
+            showModalMesage('error',response.responseJSON.title,response.responseJSON.message,'modal-create-account','email');
+
           }
         });
 
@@ -364,8 +369,6 @@ function validatorModalCreateAccount()
    
 
 </script>
-<button data-bs-target="#modal-create-password" data-bs-toggle="modal">anda</button>
-<button data-bs-target="#modal-list-ouvidoria" data-bs-toggle="modal">anda</button>
 <!-- COMEÇO Modal de mensagens/ avisos-->
 <div class="modal fade modal-sm"  id="modal-mesage" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
   <div class="modal-dialog  modal-dialog-centered">
@@ -433,7 +436,7 @@ function validatorModalCreateAccount()
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Cadastre-se 1/2</h1> 
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Informações Pessoais</h1> 
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
@@ -489,20 +492,20 @@ function validatorModalCreateAccount()
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5">Cadastre-se 2/2</h1> 
+        <h1 class="modal-title fs-5">Nova Senha</h1> 
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-create-password-body">
-          <div class="content p-4 row g-3">
-              <div class="row justify-content-md-center mt-3"> 
-                <div class="col-md-7">
+          <div class="content p-4 row g-3 mt-5 mb-5">
+              <div class="row justify-content-md-center"> 
+                <div class="col-md-9">
                     <label for="password" class="form-label">Senha</label>
                     <input type="text" class="form-control" id="password" name="password" placeholder="Senha">
                     <div id="validation-password"></div>
                 </div>
               </div>
-              <div class="row justify-content-md-center mt-3"> 
-                  <div class="col-md-7">
+              <div class="row justify-content-md-center mt-4"> 
+                  <div class="col-md-9">
                       <label for="password_comnfirm" class="form-label">Confirm sua senha</label>
                       <input type="text" class="form-control" id="password-comnfirm" name="password-comnfirm" placeholder="Confirme a senha">
                       <div id="validation-password-comnfirm"></div>
@@ -512,7 +515,7 @@ function validatorModalCreateAccount()
           </div>
       </div>
       <div class="modal-footer">
-        <button type="button" onmouseleave="" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+        <button type="button" data-bs-target="#modal-create-account" data-bs-toggle="modal" class="btn btn-secondary">Voltar</button>
         <button id="btn-create-user" type="button" class="btn btn-primary">Enviar</button>
       </div>
     </div>

@@ -25,22 +25,7 @@ if((count($data)) > 0)
     header('Content-Type: application/json; charset=UTF-8');
     return die(json_encode(array('title'=>'E-mail inválido','message' => 'E-mail já cadastrado em nosso servidor.', 'code' => 1337)));
 }
-    $result = $database->pdo->prepare('INSERT INTO users (date_birth, email, telephone, whatsapp, 
-    password, password_confirmation,name, city, fu) values ( :date_birth, :email, :telephone, :whatsapp, 
-    :password, :password_comnfirmation, :name , :city, :fu)');
 
-    $result->bindValue(":date_birth", $dateBirth);
-    $result->bindValue(":email", $email);
-    $result->bindValue(":telephone", $telephone);
-    $result->bindValue(":whatsapp", $whatsapp);
-    $result->bindValue(":password", hash('sha256', $password));
-    $result->bindValue(":password_comnfirmation", $passwordComnfirm);
-    $result->bindValue(":name", $name);
-    $result->bindValue(":city", $city);
-    $result->bindValue(":fu", $fu);
-
-    $result->execute();
-
-    echo"Cadastrado com sucesso.";
+echo"sucesso"
 
 ?>
