@@ -309,7 +309,7 @@ function validatorModalCreateAccount()
 
           $.ajax({
             type: "POST",
-            url: "../stores/verificaEmail.php",
+            url: "../web/verificaEmail.php",
             data: {'email' : $('#email').val()},
             beforeSend:function(){
               $('#btn-prox-modal-create-account').prop('disabled',true)
@@ -383,7 +383,7 @@ function validatorModalCreateAccount()
 
     $.ajax({
           type: "POST",
-          url: "../stores/createUser.php",
+          url: "../web/createUser.php",
           data: dataUser,
           beforeSend:function(){
               $('#btn-create-user').prop('disabled',true)
@@ -548,7 +548,7 @@ function validatorModalCreateAccount()
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5">Nova Senha</h1> 
+        <h1 class="modal-title fs-5">Senha</h1> 
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-create-password-body">
@@ -556,7 +556,7 @@ function validatorModalCreateAccount()
               <div class="row justify-content-md-center"> 
                 <div class="col-md-9">
                     <label for="password" class="form-label">Senha</label>
-                    <input type="text" class="form-control" id="password" name="password" placeholder="Senha">
+                    <input type="text" class="form-control" id="password" name="password" placeholder="Nova senha">
                     <div id="validation-password"></div>
                 </div>
               </div>
@@ -591,10 +591,11 @@ function validatorModalCreateAccount()
           <div class="content p-4 row g-3 mt-5 mb-5">
               <div class="row justify-content-md-center"> 
                 <div class="col-md-9">
-                    <p>Logo, enviaremos um código de verificação para o seu e-mail.</p>
-                    <label for="codigo-verificacao-email" class="form-label">Ex: 123321</label>
+                    <p style="font-size: medium;" class="mb-5">Enviamos um código de verificação para o seu e-mail.</p>
+                    <label for="codigo-verificacao-email" class="form-label">Código</label>
                     <input type="text" class="form-control" id="codigo-verificacao-email" name="codigo-verificacao-email" placeholder="Código">
-                    <div id="validation-codigo-verificacao-email"></div>
+                    <div id="validation-codigo-verificacao-email" class="mb-5"></div>
+                   
                 </div>
               </div>
           </div>

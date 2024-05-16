@@ -1,11 +1,14 @@
+
 <?php
+
+ 
 include_once "../configuration/connect.php";
 
 
 
 $name = $_POST['name'];
 $dateBirth = $_POST['date-birth'];
-$email = $_POST['email'];
+$email_form_cad = $_POST['email'];
 $telephone = $_POST['telephone'];
 $whatsapp = $_POST['whatsapp'];
 $password = $_POST['password'];
@@ -32,7 +35,7 @@ $fu = $_POST['fu'];
     :password, :password_confirmation, :name , :city, :fu)');
 
     $result->bindValue(":date_birth", $dateBirth);
-    $result->bindValue(":email", $email);
+    $result->bindValue(":email", $email_form_cad);
     $result->bindValue(":telephone", $telephone);
     $result->bindValue(":whatsapp", $whatsapp);
     $result->bindValue(":password", hash('sha256', $password));
@@ -43,9 +46,11 @@ $fu = $_POST['fu'];
 
     $result->execute();
 
-    
-    echo "ok";
+    echo "Cadastrado!";
 
+    
+
+ 
 
 
     
