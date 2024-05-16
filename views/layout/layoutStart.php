@@ -299,10 +299,48 @@ function validatorModalCreateAccount()
 
   // chama a funcao para validar e ir ao prixmo modal
   $('#btn-prox-modal-create-account').click(()=>{
+
+    // faz a validação dos campos do formulário
+    // se estiverem válidos ele fa uma requisição para
+    // ver se o e-mail já existe no banco de dados
+    // se não existir ele abre o próximo modal de senha
       if(validatorModalCreateAccount())
       {
-        $('#modal-create-account').modal('hide')
-        $('#modal-create-password').modal('show')
+
+          $.ajax({
+            type: "POST",
+            url: "../stores/verificaEmail.php",
+            data: {'email' : $('#email').val()},
+            beforeSend:function(){
+              $('#btn-prox-modal-create-account').prop('disabled',true)
+              $('#btn-prox-modal-create-account').html('<span style="margin-right:5px" class="spinner-border spinner-border-sm" aria-hidden="true">')
+            },
+            success: function() {
+
+              $('#modal-create-account').modal('hide')
+              $('#modal-create-password').modal('show')
+
+            },
+            complete:function(){
+              $('#btn-prox-modal-create-account').prop('disabled',false)
+              $('#btn-prox-modal-create-account').html('Próximo')
+
+            },
+            error: function(response) {
+              if(response.responseJSON.code == 1001)
+              {
+                showModalMesage('error',response.responseJSON.title,response.responseJSON.message,'modal-create-account');
+              }else
+
+              if(response.responseJSON.code == 1002)
+              {
+                showModalMesage('error',response.responseJSON.title,response.responseJSON.message,'modal-create-account','email');
+              }
+              
+            }
+          });
+
+       
       }
   })
 
@@ -347,15 +385,33 @@ function validatorModalCreateAccount()
           type: "POST",
           url: "../stores/createUser.php",
           data: dataUser,
+          beforeSend:function(){
+              $('#btn-create-user').prop('disabled',true)
+              $('#btn-create-user').html('<span style="margin-right:5px" class="spinner-border spinner-border-sm" aria-hidden="true">')
+          },
           success: function() {
             // Coloque aqui as instruções para fechar o dialog
-            showModalMesage('success','Parabéns!','Seu cadastro foi realizado com sucesso! Logo, enviaremos um código de verificção no seu e-mail para ativação da conta.')
+            showModalMesage('success','Parabéns!','Seu cadastro foi realizado com sucesso! Logo, enviaremos um código de verificção no seu e-mail para ativação da conta.','modal-verification-code')
+            $('#name').val('')
+            $('#date-birth').val('')
+            $('#email').val('')
+            $('#telephone').val('')
+            $('#whatsapp').val('')
+            $('#password').val('')
+            $('#password-comnfirm').val('')
+            $('#city').val('')
+            $('#fu').val('')
           },
+          complete:function(){
+              $('#btn-create-user').prop('disabled',false)
+              $('#btn-create-user').html('Enviar')
+
+            },
           error: function(response) {
             // Aqui você trata um erro que possa vir a ocorrer
             // Exemplo:
             console.log(response)
-            showModalMesage('error',response.responseJSON.title,response.responseJSON.message,'modal-create-account','email');
+            showModalMesage('error',response.responseJSON.title,response.responseJSON.message,'modal-create-password');
 
           }
         });
@@ -522,4 +578,32 @@ function validatorModalCreateAccount()
   </div>
 </div>
 <!-- FIM MODAL DE CRIAÇÃO DE SENHA -->
+
+<!-- COMEÇO MODAL DE CODIGO DE VERIFICACAO -->
+<div class="modal fade modal-pq" id="modal-verification-code" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5">Código de Verificação</h1> 
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-verification-code-body">
+          <div class="content p-4 row g-3 mt-5 mb-5">
+              <div class="row justify-content-md-center"> 
+                <div class="col-md-9">
+                    <p>Logo, enviaremos um código de verificação para o seu e-mail.</p>
+                    <label for="codigo-verificacao-email" class="form-label">Ex: 123321</label>
+                    <input type="text" class="form-control" id="codigo-verificacao-email" name="codigo-verificacao-email" placeholder="Código">
+                    <div id="validation-codigo-verificacao-email"></div>
+                </div>
+              </div>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button id="btn-codigo-verificacao-email" type="button" class="btn btn-primary">Enviar</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- FIM MODAL DE CODIGO DE VERIFICACAO -->
     
