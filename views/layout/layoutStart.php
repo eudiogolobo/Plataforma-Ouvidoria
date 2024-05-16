@@ -1,3 +1,4 @@
+<?php echo session_start(); echo session_id()?>
 <!-- COMEÇO DO LAYOUT PADRÃO -->
 <!DOCTYPE html>
 <html lang="pt-br">

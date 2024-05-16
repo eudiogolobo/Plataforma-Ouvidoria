@@ -1,36 +1,54 @@
 <?php
-
 use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 
-require_once 'Mail/src/Exception.php';
-require_once 'Mail/src/PHPMailer.php';
-require_once 'Mail/src/SMTP.php';
+//Load Composer's autoloader
+require '../vendor/autoload.php';
 
-try{
-    $mail = new PHPMailer();
+class EnviarEmail
+{
+    public $mail;
 
-    $mail->Debugoutput = true;
-$mail->isSMTP();
-$mail->SMTPDebug = 0;
-$mail->Host = 'mail.labsmaker.com.br';
-$mail->Port = 465;
-$mail->SMTPSecure = 'ssl';
-$mail->SMTPAuth = true;
-$mail->Username = 'recuperarsenha@labsmaker.com.br';
-$mail->Password = 'G2kANv772kpVbST';
+    function __construct()
+    {
+        $this->mail = new PHPMailer(true);
+    }
 
-$mail->setFrom('recuperarsenha@labsmaker.com.br', 'Prefa');
-$mail->addAddress('diogolobo444@gmail.com', 'Diogo');
-$mail->isHTML(true);
-$mail->Subject = 'TESTE';
-$mail->Body = 'Corpo da Mensagem em <b>html</b>';
-$mail->send();
+    function sendEmail($email, $name, $codigo_verificacao)
+    {
+        try {
+            //Server settings
+            $this->mail->SMTPDebug = SMTP::DEBUG_SERVER;                      //Enable verbose debug output
+            $this->mail->isSMTP();                                            //Send using SMTP
+            $this->mail->Host       = 'mail.labsmaker.com.br';                     //Set the SMTP server to send through
+            $this->mail->SMTPAuth   = true;                                   //Enable SMTP authentication
+            $this->mail->Username   = 'recuperarsenha@labsmaker.com.br';                     //SMTP username
+            $this->mail->Password   = 'G2kANv772kpVbST';                               //SMTP password
+            $this->mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
+            $this->mail->Port       = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
+    
+        //Recipients
+            $this->mail->setFrom('recuperarsenha@labsmaker.com.br', 'Ouvidoria de Criciúma');
+            $this->mail->addAddress($email, $name);     //Add a recipient        
+    
+    
+        //Content
+            $this->mail->isHTML(true);                                  //Set email format to HTML
+            $this->mail->Subject = 'Código de Verificação';
+            $this->mail->Body    = "Seu código de verificação é: <b>$codigo_verificacao</b>.";
+            $this->mail->AltBody = "Seu código de verificação é: $codigo_verificacao";
+    
+            $this->mail->send();
+            echo "EMAIL OK";
+            return true;
+        } catch (Exception $e) {
+            echo "Message could not be sent. Mailer Error: {  $this->mail->ErrorInfo}";
+            return false;
+        }
 
-} catch(Exception $e){
-    echo $e;
+    }
 }
-
 
 
 

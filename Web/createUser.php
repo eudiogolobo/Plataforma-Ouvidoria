@@ -3,7 +3,8 @@
 
  
 include_once "../configuration/connect.php";
-
+include_once "./EnviarEmail.php";
+ session_start();
 
 
 $name = $_POST['name'];
@@ -33,7 +34,7 @@ $fu = $_POST['fu'];
     $result = $database->pdo->prepare('INSERT INTO users (date_birth, email, telephone, whatsapp, 
     password, password_confirmation,name, city, fu) values ( :date_birth, :email, :telephone, :whatsapp, 
     :password, :password_confirmation, :name , :city, :fu)');
-
+  
     $result->bindValue(":date_birth", $dateBirth);
     $result->bindValue(":email", $email_form_cad);
     $result->bindValue(":telephone", $telephone);
@@ -43,12 +44,23 @@ $fu = $_POST['fu'];
     $result->bindValue(":name", $name);
     $result->bindValue(":city", $city);
     $result->bindValue(":fu", $fu);
-
     $result->execute();
 
-    echo "Cadastrado!";
+    //gero um código
+    $cod_verification = rand(100000,999999);
 
-    
+    // gravo o id da sessao caso o usuario ja va colocar o codigo, caso ele perca a sessao ele pode ativar a conta atraves do email e do codigo...
+    $result = $database->pdo->prepare('INSERT INTO email_confirmation (session_id, code_verification, email) values (:session_id, :code_verification, :email)');
+    $result->bindValue(":session_id", session_id());
+    $result->bindValue(":code_verification",  $cod_verification);
+    $result->bindValue(":email",  $email_form_cad);
+    $result->execute();
+
+    // instacio a classe EnviarEmail para realizar o envio...
+    $email = new EnviarEmail();
+    $email->sendEmail($email_form_cad,$name, $cod_verification);
+
+    echo "ok";
 
  
 
