@@ -1,8 +1,4 @@
-<?php require_once __DIR__ ."/layout/layoutStart.php";
-
-
-
-?>
+<?php require_once __DIR__ ."/layout/layoutStart.php";?>
 
 <!-- COMEÇO MODAL DE LISTAGEM OUVIDORIA -->
 <div class="modal fade modal-lg" id="modal-list-ouvidoria" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">

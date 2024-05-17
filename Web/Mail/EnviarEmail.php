@@ -58,8 +58,6 @@ class EnviarEmail
    
    
 }
-$test = new EnviarEmail();
-$test->sendEmails('diogolobo444@gmail.com','DIOGO LOBO', 123456);
 
 
 ?>

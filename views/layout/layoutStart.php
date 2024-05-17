@@ -270,7 +270,7 @@ $user = ['auth'=>false,'userName'=>'',];
           },
           success: function() {
 
-            showModalMesage('success','Conta Verificada!','Parabéns, seu cadastro foi concluído com sucesso!','','http://localhost/plataforma-ouvidoria/views/');
+            showModalMesage('success','Conta Verificada!','Parabéns, seu cadastro foi concluído com sucesso!','','','http://localhost/plataforma-ouvidoria/views/');
             //location.reload();
 
           },
@@ -349,29 +349,10 @@ $user = ['auth'=>false,'userName'=>'',];
     <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item ">
-          <a id="link-main" class="nav-link" aria-current="page" href="<?= __DIR__ ."/../../"?>">Principal</a>
+          <a id="link-main" class="nav-link" aria-current="page" href="./home.php">Principal</a>
         </li>
-
-        <li class="nav-item">
-          <a id="link-reports" class="nav-link " href="{{route('reports.index')}}">Relatórios</a>
-        </li>
-
-      
-          <li class="nav-item">
-             <a id="link-users" class="nav-link " href="{{route('users.create')}}">Usuários</a>
-          </li>
-      
-          <li class="nav-item dropdown">
-          <button id="link-administration" class="nav-link dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Administração</button>
-            <ul class="dropdown-menu">
-              <li><a  class="dropdown-item" href="{{route('schedules.create')}}">Agendas</a></li>
-              <li><a  class="dropdown-item" href="{{route('environments.create')}}">Ambientes</a></li>
-            </ul>
-          </li>
-
-  
         <li class="nav-item ">
-          <a id="link-computer" class="nav-link" aria-current="page" href="{{route('computers.view')}}">Computadores</a>
+          <a id="link-main" class="nav-link" aria-current="page" href="./ouvidoria.php">Ouvidoria</a>
         </li>
       </ul>
 
