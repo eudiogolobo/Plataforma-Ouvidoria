@@ -3,7 +3,7 @@
 
  
 include_once "../configuration/connect.php";
-include_once "./EnviarEmail.php";
+include_once "./Mail/EnviarEmail.php";
  session_start();
 
 

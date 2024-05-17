@@ -1,0 +1,1 @@
+<p>Olá $name. Seu código de verificação é: </p><h1 style="text-align: center;letter-spacing:1rem;font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;">090876</h1>.

@@ -1,4 +1,16 @@
-<?php echo session_start(); echo session_id()?>
+<?php 
+session_start();
+var_dump($_SESSION) ;
+$user = ['auth'=>false,'userName'=>'',];
+
+ $auth = false;
+  if(isset($_SESSION['password']) && isset($_SESSION['email']))
+  {
+    $user['auth'] = true;
+    $user['userName'] = $_SESSION['userName'];
+  
+  }
+?>
 <!-- COMEÇO DO LAYOUT PADRÃO -->
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -23,9 +35,12 @@
 </head>
 <body>
 
+<button data-bs-target="#modal-verification-code" data-bs-toggle="modal">MODAL</button>
 
 <!-- carregar as cidades assim que o DOM esteja pronto -->
   <script>
+
+   
 
 
 /*------------------------------------------ FUNÇÕES  -----------------------------------------*/
@@ -417,8 +432,66 @@ function validatorModalCreateAccount()
           }
         });
 
+
+
  
   })
+
+
+  $('#btn-codigo-verificacao-email').click(()=>{
+
+    $.ajax({
+          type: "GET",
+          url: "../web/ValidarCodigoEmail.php",
+          data: {'code' : $('#codigo-verificacao-email').val()},
+          beforeSend:function(){
+            $('#btn-codigo-verificacao-email').prop('disabled',true)
+            $('#btn-codigo-verificacao-email').html('<span style="margin-right:5px" class="spinner-border spinner-border-sm" aria-hidden="true">')
+          },
+          success: function() {
+
+            showModalMesage('success','Conta Verificada!','Parabéns, seu cadastro foi concluído com sucesso!','','http://localhost/plataforma-ouvidoria/views/');
+            //location.reload();
+
+          },
+          complete:function(){
+            $('#btn-codigo-verificacao-email').prop('disabled',false)
+            $('#btn-codigo-verificacao-email').html('Enviar')
+
+          },
+          error: function(response) {
+            showModalMesage('error',response.responseJSON.title,response.responseJSON.message,'modal-verification-code');
+          }
+        });
+    })
+
+    $('#btn-logout').click(()=>{
+
+// requisição para sair (eu colocaria o link no href mas no texto do desafio diz que toda comunição tem q ser via AJAX :(   )
+      $.ajax({
+        type: "GET",
+        url: "../web/logout.php",
+        beforeSend:function(){
+          $('#btn-logout').prop('disabled',true)
+        },
+        success: function() {
+          location.reload();
+        },
+        complete:function(){
+          $('#btn-logout').prop('disabled',false)
+
+        },
+        error: function(response) {
+         
+            showModalMesage('error','ERROR',"Erro ao Sair. Tente novamente!");
+          
+          
+        }
+      });
+
+   
+  
+})
 
        
     })
@@ -449,7 +522,7 @@ function validatorModalCreateAccount()
 <!-- COMEÇO NAVBAR -->
 <nav class="navbar navbar-expand-lg bg-primary border-body sticky-top" data-bs-theme="dark">
   <div class="container-fluid">
-  <a class="navbar-brand" href="{{route('main.index')}}"><img height="30px" src="#" alt=""></a>
+  <a class="navbar-brand" href="{{route('main.index')}}"><img height="30px" src="../public/img/logo-prefa.png" width="200px" alt=""></a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -482,8 +555,34 @@ function validatorModalCreateAccount()
         </li>
       </ul>
 
-      <button class="btn btn-light me-2">Entrar</button>
-      <button class="btn btn-outline-light" data-bs-target="#modal-create-account" data-bs-toggle="modal">Cadastrar-se</button>
+      <?php if($user['auth'] == false){
+               echo '<button class="btn btn-light me-2">Entrar</button>';
+                echo '<button class="btn btn-outline-light" data-bs-target="#modal-create-account" data-bs-toggle="modal">Cadastrar-se</button>';
+            } else{
+
+              echo '<div class="nav-item dropdown" style="width: auto;">';
+              echo '<button type="button" style="min-width: 100px;margin: 0;padding: 0; background-color: transparent;border: none;display: flex; align-items: center;vertical-align:middle ;" class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-display="static" data-bs-auto-close="outside">';
+              echo '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-person-fill me-2" viewBox="0 0 16 16">';
+              echo '<path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>';          
+              echo ' </svg>';      
+              echo $user['userName'];       
+                     
+              echo '</button>';
+              echo '<div id="dropdown-menu-header" class="dropdown-menu dropdown-menu-end p-1" style="max-width: 100px;">';
+                
+              echo '<button style="text-align: left; width: 100%;" class="btn btn-dark">Meu perfil</button>';
+              echo '<button style="text-align: left; width: 100%; " class="btn btn-dark">Alterar senha</button>';
+              echo  '<button id="btn-logout" style="text-align: left; width: 100%;" class="btn btn-dark">Sair</button>';
+                
+                
+              echo '</div>';
+        
+       
+              echo'</div>';
+              
+            }
+        ?>
+    
   </div>
 </nav>
 <!-- FIM NAV BAR -->

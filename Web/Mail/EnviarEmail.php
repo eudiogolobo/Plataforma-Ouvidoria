@@ -20,7 +20,8 @@ class EnviarEmail
         try {
             //Server settings
             $this->mail->SMTPDebug = SMTP::DEBUG_SERVER;                      //Enable verbose debug output
-            $this->mail->isSMTP();                                            //Send using SMTP
+            $this->mail->isSMTP();           
+            $this->mail->CharSet = "UTF-8";                                 //Send using SMTP
             $this->mail->Host       = 'mail.labsmaker.com.br';                     //Set the SMTP server to send through
             $this->mail->SMTPAuth   = true;                                   //Enable SMTP authentication
             $this->mail->Username   = 'recuperarsenha@labsmaker.com.br';                     //SMTP username
@@ -36,7 +37,7 @@ class EnviarEmail
         //Content
             $this->mail->isHTML(true);                                  //Set email format to HTML
             $this->mail->Subject = 'Código de Verificação';
-            $this->mail->Body    = "Seu código de verificação é: <b>$codigo_verificacao</b>.";
+            $this->mail->Body    = "<p>Olá $name. Seu código de verificação é: </p><h1 style='text-align: center;letter-spacing:1rem;font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;'>$codigo_verificacao</h1>.";
             $this->mail->AltBody = "Seu código de verificação é: $codigo_verificacao";
     
             $this->mail->send();
