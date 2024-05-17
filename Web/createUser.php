@@ -61,7 +61,7 @@ $fu = $_POST['fu'];
 
     // instacio a classe EnviarEmail para realizar o envio...
     $emailNew = new EnviarEmail();
-    $emailNew->sendEmail($email_form_cad,$name, $cod_verification);
+    $emailNew->sendEmails($email_form_cad,$name, $cod_verification);
 
     echo "ok";
 

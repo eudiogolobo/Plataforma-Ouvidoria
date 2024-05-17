@@ -19,7 +19,7 @@ class EnviarEmail
          
     }
 
-    function sendEmail($emailTo, $name, $codigo_verificacao)
+    function sendEmails($emailTo, $name, $codigo_verificacao)
     {
         try {
             //Server settings 
@@ -27,10 +27,10 @@ class EnviarEmail
             $this->mail->SMTPDebug = SMTP::DEBUG_SERVER;                      //Enable verbose debug output
             $this->mail->isSMTP();   
             $this->mail->CharSet = "UTF-8";                                 //Send using SMTP
-            $this->mail->Host       = 'mail.labsmaker.com.br';                     //Set the SMTP server to send through
+            $this->mail->Host       = 'smtp.titan.email';                     //Set the SMTP server to send through
             $this->mail->SMTPAuth   = true;                                   //Enable SMTP authentication
             $this->mail->Username   = 'recuperarsenha@labsmaker.com.br';                     //SMTP username
-            $this->mail->Password   = 'G2kANv772kpVbST';                               //SMTP password
+            $this->mail->Password   = 'b4TQq++9n7@Q3hs';                               //SMTP password
             $this->mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;         //Enable implicit TLS encryption
             $this->mail->Port       = 465;    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
           
@@ -59,7 +59,7 @@ class EnviarEmail
    
 }
 $test = new EnviarEmail();
-$test->sendEmail('diogolobo444@gmail.com','DIOGO LOBO', '123456');
+$test->sendEmails('diogolobo444@gmail.com','DIOGO LOBO', 123456);
 
 
 ?>
