@@ -1,10 +1,12 @@
 <?php
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 
 //Load Composer's autoloader
-require '../vendor/autoload.php';
+require __DIR__.'/../../vendor/autoload.php';
+
 
 class EnviarEmail
 {
@@ -13,25 +15,28 @@ class EnviarEmail
     function __construct()
     {
         $this->mail = new PHPMailer(true);
+        
+         
     }
 
-    function sendEmail($email, $name, $codigo_verificacao)
+    function sendEmail($emailTo, $name, $codigo_verificacao)
     {
         try {
-            //Server settings
+            //Server settings 
+           
             $this->mail->SMTPDebug = SMTP::DEBUG_SERVER;                      //Enable verbose debug output
-            $this->mail->isSMTP();           
+            $this->mail->isSMTP();   
             $this->mail->CharSet = "UTF-8";                                 //Send using SMTP
             $this->mail->Host       = 'mail.labsmaker.com.br';                     //Set the SMTP server to send through
             $this->mail->SMTPAuth   = true;                                   //Enable SMTP authentication
             $this->mail->Username   = 'recuperarsenha@labsmaker.com.br';                     //SMTP username
             $this->mail->Password   = 'G2kANv772kpVbST';                               //SMTP password
-            $this->mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
-            $this->mail->Port       = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
-    
+            $this->mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;         //Enable implicit TLS encryption
+            $this->mail->Port       = 465;    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
+          
         //Recipients
             $this->mail->setFrom('recuperarsenha@labsmaker.com.br', 'Ouvidoria de Criciúma');
-            $this->mail->addAddress($email, $name);     //Add a recipient        
+            $this->mail->addAddress($emailTo, $name);     //Add a recipient        
     
     
         //Content
@@ -49,9 +54,12 @@ class EnviarEmail
         }
 
     }
+
+   
+   
 }
-
-
+$test = new EnviarEmail();
+$test->sendEmail('diogolobo444@gmail.com','DIOGO LOBO', '123456');
 
 
 ?>

@@ -3,7 +3,10 @@
 
  
 include_once "../configuration/connect.php";
-include_once "./Mail/EnviarEmail.php";
+include_once __DIR__."/Mail/EnviarEmail.php";
+
+
+
  session_start();
 
 
@@ -57,8 +60,8 @@ $fu = $_POST['fu'];
     $result->execute();
 
     // instacio a classe EnviarEmail para realizar o envio...
-    $email = new EnviarEmail();
-    $email->sendEmail($email_form_cad,$name, $cod_verification);
+    $emailNew = new EnviarEmail();
+    $emailNew->sendEmail($email_form_cad,$name, $cod_verification);
 
     echo "ok";
 

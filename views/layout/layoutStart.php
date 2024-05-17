@@ -28,6 +28,7 @@ $user = ['auth'=>false,'userName'=>'',];
 
     <!-- CDN mask -->
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery.maskedinput/1.4.1/jquery.maskedinput.min.js"></script>
+    <script src="../public/Js/JsStart.js" defer></script>
 
     <link rel="stylesheet" href="../public/css/layout.css">
 
@@ -43,189 +44,8 @@ $user = ['auth'=>false,'userName'=>'',];
    
 
 
-/*------------------------------------------ FUNÇÕES  -----------------------------------------*/
 
 
-        // funcao para validar email (vai ser utilizada no login e na criação de conta)
-        function validEmail(inputEmail)
-        {
-            // modelo de como deve ser o email
-            var filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-
-            // se o input for incompativel com o filtro retorna mensagem de erro
-            // e remove a classe is-valid do input e da div de mensagem do input
-            // e add a clase is-invalid no input e na div de mensagem do input
-            if (!filter.test($('#'+inputEmail).val())) {
-
-              showModalMesage('error', 'E-mail inválido', 'Por favor, insira um e-mail válido.','modal-create-account','email')
-              $('#'+inputEmail).removeClass('is-valid')
-              $('#validation-'+inputEmail).removeClass('is-valid')
-
-              $('#'+inputEmail).addClass('is-invalid')
-              $('#validation-'+inputEmail).addClass('is-invalid')
-              $('#validation-'+inputEmail).html('Campo obrigatório.')
-        
-        
-              return false
-            }
-
-            // se passar quer dizer q é válido
-            // e remove a classe is-invalid do input e da div de mensagem do input
-            // e add a clase is-valid no input e na div de mensagem do input
-            $('#'+inputEmail).removeClass('is-invalid')
-            $('#validation-'+inputEmail).removeClass('is-invalid')
-
-            $('#validation-'+inputEmail).html('')
-
-            $('#'+inputEmail).addClass('is-valid')
-            $('#validation-'+inputEmail).addClass('is-valid')
-
-            return
-        }
-
-    
-
-        // funcao para moldar e chamar meu modal de mensagens
-        function showModalMesage(typeModal, titleModal, htmlContent, modalTarget, nameInputFocus, redirectValue)
-        {
-          // seleciono todos os modais
-          var modals = $('.modal').each(function(){
-            // fecho todos
-            $(this).modal('hide')
-          })
-          
-          // se o parametro typeModal for success coloco a classe btn-success no botao para deixar verde e coloco uma animação em html e css de sucesso
-          if(typeModal == 'success') 
-          {
-            $('#body-modal-mesage').html('<div class="success-checkmark"><div class="check-icon"><span class="icon-line line-tip"></span><span class="icon-line line-long"></span><div class="icon-circle"></div><div class="icon-fix"></div></div></div><span style="margin-left: 1rem;">'+htmlContent+'</span></div>')
-            $('#btn-ok-modal-mesage').addClass('btn btn-success')
-          } 
-
-          // se o parametro typeModal for error add a classe btn-danger no botao para deixar vermelho 
-          if(typeModal == 'error')
-          {
-            $('#body-modal-mesage').html(htmlContent)
-            $('#btn-ok-modal-mesage').addClass('btn btn-danger')
-            $('#btn-ok-modal-mesage').attr('onclick', 'elementFocus("'+nameInputFocus+'")')
-           
-
-          }
-
-          // passo o valor do parametro titleModal para o titulo do modal
-          $('#modal-mesage-title').html(titleModal)
-
-
-          // se houver valor no parametro modalTarget eu add o valor dele 
-          // ao data-bs-target e add data-bs-toggle para abrir o modal quando clicarem em ok
-          if(modalTarget != undefined)
-          {
-            $('#btn-ok-modal-mesage').attr('data-bs-target', '#'+modalTarget)
-            $('#btn-ok-modal-mesage').attr('data-bs-toggle',"modal")
-          }
-
-          // abro o modal-mesage
-          $('#modal-mesage').modal('show')
-
-
-          // se houver valor ao redirectValue eu redireciono o usuario ao clicar no btn ok do modal-mesage
-          if(redirectValue != undefined)
-          {
-            $('#btn-ok-modal-mesage').click(()=>{
-              window.location.href = redirectValue
-            })
-          }
-
-        }
-
-      /*-------------------------------------- FIM da função validEmail ----------------------------------*/
-
-
-// função que vai ser atribuida no evento onclick ao btn do modal-mesage quando o typeModal for ERROR
-// para focar no campo inválido 
-function elementFocus(idInputFocus)
-{
-  setTimeout(()=>{
-    $('#'+idInputFocus).focus()
-    $('#'+idInputFocus).removeClass('is-valid')
-    $('#'+idInputFocus).addClass('is-invalid')
-  }, 300)
-
-}
-
-//funcao para validar os campos do formulário
-function validField(idField, personalizedName,modalId)
-{
-  // se o valor do campo com o id que foi passado for vazio 
-  // ele chama o modal do type error e adddiciona as classes is-invalid no input 
-  // e na div da mensagem em baixo do input dai retorna false
-  if($('#'+idField+'').val() == '')
-        {
-          showModalMesage('error','Campo inválido', 'Campo obrigatório '+personalizedName+' em branco',modalId,idField); 
-          $('#'+idField).removeClass('is-valid')
-          $('#validation-'+idField).removeClass('is-valid')
-
-          $('#'+idField).addClass('is-invalid')
-          $('#validation-'+idField).addClass('is-invalid')
-          $('#validation-'+idField).html('Campo obrigatório.')
-          return false
-        } else{
-
-          // se o campo é diferente de vazio ele add a classe is-valid no input
-          // e remove o text da div de mensagem em baixo do input, então retorna true 
-          $('#'+idField).removeClass('is-invalid')
-          $('#validation-'+idField).removeClass('is-invalid')
-
-          $('#validation-'+idField).html('')
-
-          $('#'+idField).addClass('is-valid')
-          $('#validation-'+idField).addClass('is-valid')
-      
-            return true
-        }
-}
-
-
-// funcao para validar o modal-account-create e ir para o próximo modal de criação de senha
-
-function validatorModalCreateAccount()
-   {
-
-        // chama a função validFiel para ver se o campo está em branco e se retornar 
-        // false retorna true saindo da função de salvar
-        if(validField('name','nome','modal-create-account') == false || validField('date-birth','data de nascimento','modal-create-account') == false || validField('telephone','telefone','modal-create-account') == false || validField('whatsapp','whatsapp','modal-create-account') == false || validField('email','e-mail','modal-create-account') == false || validEmail('email','modal-create-account') == false || validField('fu', 'UF','modal-create-account') == false || validField('city', 'cidade','modal-create-account') == false)
-        {
-          return false
-        }
-
-
-        /*---------------------------- validação maior de idade --------------------------------------*/
-
-            //pego o valor do input date
-            dt = $('#date-birth').val();
-
-            //transformo em array separando cada indice pela barra, inverto e junto tudo de novo devolvendo a barra
-            dt = dt.split('/').reverse().join('/');
-
-            // atribuo o valor do objeto Date numa variaval
-            dob = new Date(dt);
-
-            // pedo a data de hoje
-            var today = new Date();
-
-            // calculo a idade diminuindo a data de hoje menos a data que o usuario digitou dai
-            // o retorno vem em milissegundo, em seguida divido pela quantidade de milissegundo de um ano 
-            // e obtenho essa divisão do menor numero inteiro usando o Floor
-            var idade = Math.floor((today-dob) / (365.29 * 24 * 60 * 60 * 1000));
-
-            // se a idade for menos que 18 retorno o erro
-            if(idade < 18)
-            {
-            showModalMesage('error','Menor de idade', 'Para você se cadastrar, deve ter no mínimo 18 anos.','modal-create-account','date-birth');
-            return false
-            }
-        
-         return true
-    }
 
     $(document).ready(()=>{
 
@@ -597,37 +417,37 @@ function validatorModalCreateAccount()
       </div>
       <div class="modal-body">
         <div class="content p-4 row g-3">
-            <div class="col-md-6">
+            <div class="col-sm-12 col-md-6">
                 <label for="name" class="form-label">Nome Completo</label>
                 <input type="text" class="form-control" id="name" name="name" placeholder="Nome completo">
                 <div id="validation-name"></div>
             </div>
-            <div class="col-md-3">
+            <div class="col-sm-5 col-md-3">
                 <label for="date_birth" class="form-label">Data de Nascimento</label>
                 <input type="date" class="form-control" id="date-birth" name="date_birth" value="2005-01-10">
                 <div id="validation-date-birth"></div>
             </div>
-            <div class="col-md-3">
+            <div class="col-sm-7 col-md-3">
                 <label for="telephone" class="form-label">Telefone</label>
                 <input type="text" class="form-control" id="telephone" name="telephone" placeholder="Telefone">
                 <div id="validation-telephone"></div>
             </div>
-            <div class="col-md-3">
+            <div class="col-sm-5 col-md-3">
                 <label for="whatsapp" class="form-label">WhatsApp</label>
                 <input type="text" class="form-control" id="whatsapp" name="whatsapp" placeholder="WhatsApp">
                 <div id="validation-whatsapp"></div>
             </div>
-            <div class="col-md-7">
+            <div class="col-sm-7 col-md-7">
                 <label for="email" class="form-label">E-mail</label>
                 <input type="email" class="form-control" id="email" id="email" placeholder="E-mail">
                 <div id="validation-email"></div>
             </div>
-            <div class="col-md-2">
+            <div class="col-sm-3 col-md-2">
                 <label for="fu" class="form-label">UF</label>
                 <select name="fu" id="fu" class="form-select"></select>
                 <div id="validation-fu"></div>
             </div>
-            <div class="col-md-5">
+            <div class="col-sm-9 col-md-5">
                 <label for="city" class="form-label">Cidade</label>
                 <select name="city" id="city" class="form-select"></select>
                 <div id="validation-city"></div>
