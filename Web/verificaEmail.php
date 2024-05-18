@@ -16,6 +16,18 @@ try {
 // pega o valor do email mandado pelo POST 
 $email = $_POST['email'];
 
+$emailCod = $database->pdo->prepare("SELECT * FROM email_confirmation WHERE email = :email");
+$emailCod->execute();
+
+$dataEmailCod = $emailCod->fetchAll(PDO::FETCH_ASSOC);
+
+if(count($dataEmailCod) > 0)
+{
+    header('HTTP/1.1 500 Internal Server');
+    header('Content-Type: application/json; charset=UTF-8');
+    return die(json_encode(array('title'=>'ATENÇÃO','message' => 'Esse e-mail já está em nosso sistema. Deseja ir para etapa de confirmação desse e-mail?', 'code' => 1003)));
+
+}
 // prepara e executa a pesquisa (Essa maneira com "prepare()" e "execute()" ajuda a evitar SQL)
 $confirmEmail = $database->pdo->prepare("SELECT * FROM users where email = :email ");
 $confirmEmail->bindValue(":email", $email);

@@ -201,7 +201,7 @@ function validatorModalCreateAccount()
        }
 
 
-       /*---------------------------- validação maior de idade --------------------------------------*/
+       /*---------------------------- INICIO validação maior de idade --------------------------------------*/
 
            //pego o valor do input date
            dt = $('#date-birth').val();
@@ -226,6 +226,7 @@ function validatorModalCreateAccount()
            showModalMesage('error','Menor de idade', 'Para você se cadastrar, deve ter no mínimo 18 anos.','modal-create-account','date-birth');
            return false
            }
+            /*---------------------------- FIM validação maior de idade --------------------------------------*/
        
         return true
    }
