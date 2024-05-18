@@ -3,9 +3,7 @@
 
  
 include_once "../configuration/connect.php";
-include_once __DIR__."/Mail/EnviarEmail.php";
-
-
+include_once __DIR__."/EnviarCodigoVerificacao.php";
 
  session_start();
 
@@ -34,8 +32,8 @@ $fu = $_POST['fu'];
    
       
     
-    $result = $database->pdo->prepare('INSERT INTO users (date_birth, email, telephone, whatsapp, 
-    password, password_confirmation,name, city, fu) values ( :date_birth, :email, :telephone, :whatsapp, 
+    $result = $database->pdo->prepare('INSERT INTO users (status, date_birth, email, telephone, whatsapp, 
+    password, password_confirmation,name, city, fu) values (:status, :date_birth, :email, :telephone, :whatsapp, 
     :password, :password_confirmation, :name , :city, :fu)');
   
     $result->bindValue(":date_birth", $dateBirth);
@@ -45,30 +43,14 @@ $fu = $_POST['fu'];
     $result->bindValue(":password", hash('sha256', $password));
     $result->bindValue(":password_confirmation", $passwordComnfirm);
     $result->bindValue(":name", $name);
+    $result->bindValue(":status", 'INATIVO');
     $result->bindValue(":city", $city);
     $result->bindValue(":fu", $fu);
     $result->execute();
 
-    //gero um código
-    $cod_verification = rand(100000,999999);
+    $enviarCodVerif = new EnviarCodigoVerificacao();
 
-    // gravo o id da sessao caso o usuario ja va colocar o codigo, caso ele perca a sessao ele pode ativar a conta atraves do email e do codigo...
-    $result = $database->pdo->prepare('INSERT INTO email_confirmation (session_id, code_verification, email) values (:session_id, :code_verification, :email)');
-    $result->bindValue(":session_id", session_id());
-    $result->bindValue(":code_verification",  $cod_verification);
-    $result->bindValue(":email",  $email_form_cad);
-    $result->execute();
-
-    // instacio a classe EnviarEmail para realizar o envio...
-    $emailNew = new EnviarEmail();
-    $emailNew->sendEmails($email_form_cad,$name, $cod_verification);
-
-    echo "ok";
-
- 
-
-
-    
+    $enviarCodVerif->EnviarCodigo($email_form_cad, $name);
 
 
    

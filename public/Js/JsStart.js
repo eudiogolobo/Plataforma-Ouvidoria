@@ -99,7 +99,81 @@ function showModalMesage(typeModal, titleModal, htmlContent, modalTarget, nameIn
 
 }
 
+function ReenviarCodigoVerificacao(inputId)
+{
+  if($('#'+inputId).hasClass('reenviarCodigoVerificacao')){
+    alert('tem')
+  } else{
+    console.log($('#'+inputId))
+    alert('nao')
+  }
+}
+
 /*-------------------------------------- FIM ShowModalMesage ----------------------------------*/
+
+/*------------------------------------------ INICIO ShowModalOptions -----------------------------------------*/
+// funcao para moldar e chamar meu modal de opções
+function ShowModalOptions(typeModal, titleModal, htmlContent, modalTargetOk, nameInputFocusOK,modalTargetCancel, nameInputFocusCancel, redirectValue)
+{
+    // seleciono todos os modais
+    var modals = $('.modal').each(function(){
+    // fecho um por um
+    $(this).modal('hide')
+    })
+    
+    // se o parametro typeModal for success coloco a classe btn-success no botao para deixar verde 
+    if(typeModal == 'reenviarCodigo') 
+    {
+    $('#body-modal-options').html(htmlContent)
+    
+    $('#btn-ok-modal-options').addClass('reenviarCodigoVerificacao')
+ 
+    $('#btn-cancel-modal-options').attr('onclick', 'elementFocus("'+nameInputFocusCancel+'")')
+
+    } 
+
+    // se o parametro typeModal for error add a classe btn-danger no botao para deixar vermelho 
+    if(typeModal == 'error')
+    {
+    $('#body-modal-options').html(htmlContent)
+
+    $('#btn-ok-modal-options').addClass('btn btn-danger')
+    $('#btn-ok-modal-options').attr('onclick', 'elementFocus("'+nameInputFocusOK+'","normal")')
+
+    $('#btn-cancel-modal-options').addClass('btn btn-danger')
+    $('#btn-cancel-modal-options').attr('onclick', 'elementFocus("'+nameInputFocusCancel+'")')
+    }
+
+    // passo o valor do parametro titleModal para o titulo do modal
+    $('#modal-options-title').html(titleModal)
+
+
+    // se houver valor no parametro modalTargetOk eu add o valor dele 
+    // ao data-bs-target e add data-bs-toggle para abrir o modal quando clicarem em ok
+    if(modalTargetOk != undefined && modalTargetCancel != undefined )
+    {
+    $('#btn-ok-modal-options').attr('data-bs-target', '#'+modalTargetOk)
+    $('#btn-ok-modal-options').attr('data-bs-toggle',"modal")
+
+    $('#btn-cancel-modal-options').attr('data-bs-target', '#'+modalTargetCancel)
+    $('#btn-cancel-modal-options').attr('data-bs-toggle',"modal")
+    }
+
+    // abro o modal-options
+    $('#modal-options').modal('show')
+
+
+    // se houver valor no parametro redirectValue eu redireciono o usuario ao clicar no btn ok do modal-options
+    if(redirectValue != undefined)
+    {
+    $('#btn-ok-modal-options').click(()=>{
+        window.location.href = redirectValue
+    })
+    }
+
+}
+
+/*-------------------------------------- FIM ShowModalOptions ----------------------------------*/
 
 
 
@@ -108,12 +182,19 @@ function showModalMesage(typeModal, titleModal, htmlContent, modalTarget, nameIn
 /*------------------------------------------ INICIO elementFocus -----------------------------------------*/
 // função que vai ser atribuida no evento onclick ao btn do modal-mesage quando o typeModal for ERROR
 // para focar no campo inválido 
-function elementFocus(idInputFocus)
+function elementFocus(idInputFocus, type)
 {
  setTimeout(()=>{
-   $('#'+idInputFocus).focus()
-   $('#'+idInputFocus).removeClass('is-valid')
-   $('#'+idInputFocus).addClass('is-invalid')
+  if(type == 'normal')
+    {
+      $('#'+idInputFocus).focus()
+    }else{
+      $('#'+idInputFocus).focus()
+      $('#'+idInputFocus).removeClass('is-valid')
+      $('#'+idInputFocus).addClass('is-invalid')
+    }
+  
+  
  }, 300)
 
 }

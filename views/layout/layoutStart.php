@@ -1,6 +1,7 @@
 <?php 
 session_start();
 var_dump($_SESSION) ;
+echo session_id();
 $user = ['auth'=>false,'userName'=>'',];
 
  $auth = false;
@@ -120,7 +121,7 @@ $user = ['auth'=>false,'userName'=>'',];
             element = $(target);   
         });
 
-          // toda vez que clicar no botao ok do modal ele remove as propriedades target e o toogle do botão 
+          // toda vez que clicar no botao ok do modal mensagens/avisos ele remove as propriedades target e o toogle do botão 
           $('#btn-ok-modal-mesage').click(function(){
 
             $(this).removeAttr('data-bs-target')
@@ -130,6 +131,27 @@ $user = ['auth'=>false,'userName'=>'',];
                 $(this).addClass('btn btn-success')
             }, 500);
 
+            })
+        // toda vez que clicar no botao ok do modal de opções ele remove as propriedades target e o toogle do botão 
+            $('#btn-ok-modal-options').click(function(){
+
+              ReenviarCodigoVerificacao('btn-ok-modal-options')
+
+            $('#btn-cancel-modal-options').removeAttr('data-bs-target')
+            $('#btn-cancel-modal-options').removeAttr('data-bs-toggle')
+
+            $(this).removeAttr('data-bs-target')
+            $(this).removeAttr('data-bs-toggle')
+
+            })
+        // toda vez que clicar no botao cancel do modal de opções ele remove as propriedades target e o toogle do botão 
+            $('#btn-cancel-modal-options').click(function(){
+
+            $('#btn-ok-modal-options').removeAttr('data-bs-target')
+            $('#btn-ok-modal-options').removeAttr('data-bs-toggle')
+
+            $(this).removeAttr('data-bs-target')
+            $(this).removeAttr('data-bs-toggle')
 
             })
 
@@ -172,6 +194,11 @@ $user = ['auth'=>false,'userName'=>'',];
               {
                 showModalMesage('error',response.responseJSON.title,response.responseJSON.message,'modal-create-account','email');
               }
+
+              if(response.responseJSON.code == 1003)
+              {
+                ShowModalOptions('reenviarCodigo',response.responseJSON.title,response.responseJSON.message,'modal-verification-code','codigo-verificacao-email', 'modal-create-account','email');
+              }
               
             }
           });
@@ -179,6 +206,7 @@ $user = ['auth'=>false,'userName'=>'',];
        
       }
   })
+
 
  
   
@@ -257,6 +285,7 @@ $user = ['auth'=>false,'userName'=>'',];
  
   })
 
+ 
 
   $('#btn-codigo-verificacao-email').click(()=>{
 
@@ -338,6 +367,33 @@ $user = ['auth'=>false,'userName'=>'',];
   </div>
 </div>
 <!-- FIM Modal de mensagens/ avisos-->
+
+<!-- COMEÇO Modal de OPÇÕES/ YES/NO-->
+<div class="modal fade modal-sm"  id="modal-options" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
+  <div class="modal-dialog  modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 id="modal-options-title" class="modal-title fs-5"></h1>
+      </div>
+      
+      <div id="body-modal-options" class="modal-body" style="display: flex; align-items: center;  flex-direction: row;"></div>
+      
+      <div class="modal-footer g-3">
+        <div id="group-buttons-modal-options" class="d-grid gap-2 d-md-flex justify-content-md-centered" style="width:100%">
+            <div class="row">
+                <div class="col-6 col-sm-6">
+                    <button style="width: 100%;" id="btn-ok-modal-options" class="btn btn-success" type="button">Yes</button>
+                </div>
+                <div class="col-6 col-sm-6">
+                    <button id="btn-cancel-modal-options" style="width: 100%;" type="button" class="btn btn-secondary" >No</button>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- FIM Modal de OPÇÕES/ YES/NO-->
 
 <!-- COMEÇO NAVBAR -->
 <nav class="navbar navbar-expand-lg bg-primary border-body sticky-top" data-bs-theme="dark">
