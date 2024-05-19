@@ -99,15 +99,7 @@ function showModalMesage(typeModal, titleModal, htmlContent, modalTarget, nameIn
 
 }
 
-function ReenviarCodigoVerificacao(inputId)
-{
-  if($('#'+inputId).hasClass('reenviarCodigoVerificacao')){
-    alert('tem')
-  } else{
-    console.log($('#'+inputId))
-    alert('nao')
-  }
-}
+
 
 /*-------------------------------------- FIM ShowModalMesage ----------------------------------*/
 

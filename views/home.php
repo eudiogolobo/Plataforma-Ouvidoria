@@ -94,6 +94,12 @@
 
 </div>
 
+<script>
+      // add class active ao item do menu principal
+
+      $('#link-main').addClass('active');
+</script>
+
 
    
     

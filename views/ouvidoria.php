@@ -18,6 +18,12 @@
 
         <button id="send-attachments" class="btn btn-success mt-4" >Enviar</button>
         <script>
+
+
+        // add class active ao item do menu principal
+
+        $('#link-ouvidoria').addClass('active');
+
             function base64img(obj)
             {
                 let files64 = ['files']

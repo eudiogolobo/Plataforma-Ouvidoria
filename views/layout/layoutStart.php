@@ -1,7 +1,5 @@
 <?php 
 session_start();
-var_dump($_SESSION) ;
-echo session_id();
 $user = ['auth'=>false,'userName'=>'',];
 
  $auth = false;
@@ -37,11 +35,35 @@ $user = ['auth'=>false,'userName'=>'',];
 </head>
 <body>
 
-<button data-bs-target="#modal-verification-code" data-bs-toggle="modal">MODAL</button>
-
 <!-- carregar as cidades assim que o DOM esteja pronto -->
   <script>
+function ReenviarCodigoVerificacao(inputId)
+{
+  if($('#'+inputId).hasClass('reenviarCodigoVerificacao')){
 
+    $.ajax({
+            type: "POST",
+            url: "../web/reenviarCodigoVerificacao.php",
+            data: {'email' : $('#email').val(), 'name': $('#name').val()},
+            beforeSend:function(){
+            
+            },
+            success: function() {
+
+
+            },
+            complete:function(){
+           
+
+            },
+            error: function(response) {
+            }
+          });
+    
+  
+  } 
+  
+}
    
 
 
@@ -93,9 +115,7 @@ $user = ['auth'=>false,'userName'=>'',];
 
         });
 
-        // add class active ao item do menu principal
-
-        $('#link-main').addClass('active');
+      
 
         // add maskara ao input telefone
        $('#telephone').mask("(99) 9999-9999")
@@ -142,6 +162,8 @@ $user = ['auth'=>false,'userName'=>'',];
 
             $(this).removeAttr('data-bs-target')
             $(this).removeAttr('data-bs-toggle')
+            $(this).removeClass()
+            $(this).addClass('btn btn-success')
 
             })
         // toda vez que clicar no botao cancel do modal de opções ele remove as propriedades target e o toogle do botão 
@@ -250,12 +272,14 @@ $user = ['auth'=>false,'userName'=>'',];
           url: "../web/createUser.php",
           data: dataUser,
           beforeSend:function(){
+            //$('#modal-create-password').modal('hide');
+             // $('#modal-verification-code').modal('show');
+             showModalMesage('success','Parabéns!','Seu cadastro foi realizado com sucesso!','modal-verification-code')
               $('#btn-create-user').prop('disabled',true)
               $('#btn-create-user').html('<span style="margin-right:5px" class="spinner-border spinner-border-sm" aria-hidden="true">')
           },
           success: function() {
             // Coloque aqui as instruções para fechar o dialog
-            showModalMesage('success','Parabéns!','Seu cadastro foi realizado com sucesso! Logo, enviaremos um código de verificção no seu e-mail para ativação da conta.','modal-verification-code')
             $('#name').val('')
             $('#date-birth').val('')
             $('#email').val('')
@@ -265,10 +289,20 @@ $user = ['auth'=>false,'userName'=>'',];
             $('#password-comnfirm').val('')
             $('#city').val('')
             $('#fu').val('')
+
+            $('#name').removeClass('is-valid')
+            $('#date-birth').removeClass('is-valid')
+            $('#email').removeClass('is-valid')
+            $('#telephone').removeClass('is-valid')
+            $('#whatsapp').removeClass('is-valid')
+            $('#password').removeClass('is-valid')
+            $('#password-comnfirm').removeClass('is-valid')
+            $('#city').removeClass('is-valid')
+            $('#fu').removeClass('is-valid')
           },
           complete:function(){
               $('#btn-create-user').prop('disabled',false)
-              $('#btn-create-user').html('Enviar')
+              $('#btn-create-user').html('Próximo')
 
             },
           error: function(response) {
@@ -284,6 +318,36 @@ $user = ['auth'=>false,'userName'=>'',];
 
  
   })
+
+  
+  $('#btn-login').click(()=>{
+
+    $.ajax({
+          type: "POST",
+          url: "../web/login.php",
+          data: {'email' : $('#email-login').val(), 'password': $('#password-login').val()},
+          beforeSend:function(){
+            $('#btn-login').prop('disabled',true)
+            $('#btn-login').html('<span style="margin-right:5px" class="spinner-border spinner-border-sm" aria-hidden="true">')
+          },
+          success: function() {
+
+           
+            location.reload();
+
+          },
+          complete:function(){
+            $('#btn-login').prop('disabled',false)
+            $('#btn-login').html('Enviar')
+
+          },
+          error: function(response) {
+            showModalMesage('error',response.responseJSON.title,response.responseJSON.message,'modal-login');
+          }
+        });
+
+  })
+
 
  
 
@@ -378,17 +442,13 @@ $user = ['auth'=>false,'userName'=>'',];
       
       <div id="body-modal-options" class="modal-body" style="display: flex; align-items: center;  flex-direction: row;"></div>
       
-      <div class="modal-footer g-3">
-        <div id="group-buttons-modal-options" class="d-grid gap-2 d-md-flex justify-content-md-centered" style="width:100%">
-            <div class="row">
-                <div class="col-6 col-sm-6">
-                    <button style="width: 100%;" id="btn-ok-modal-options" class="btn btn-success" type="button">Yes</button>
-                </div>
-                <div class="col-6 col-sm-6">
-                    <button id="btn-cancel-modal-options" style="width: 100%;" type="button" class="btn btn-secondary" >No</button>
-                </div>
+      <div class="modal-footer" class="row my-5 justify-content-center">
+      
+            <div class="d-inline-flex gap-1 col-12 col-sm-12 mt-4" style="width: 100%;">
+              <button style="width: 50%;" id="btn-ok-modal-options" class="btn btn-success" type="button">Yes</button>
+              <button id="btn-cancel-modal-options" style="width: 50%;" type="button" class="btn btn-secondary" >No</button>
             </div>
-        </div>
+        
       </div>
     </div>
   </div>
@@ -407,13 +467,21 @@ $user = ['auth'=>false,'userName'=>'',];
         <li class="nav-item ">
           <a id="link-main" class="nav-link" aria-current="page" href="./home.php">Principal</a>
         </li>
-        <li class="nav-item ">
-          <a id="link-main" class="nav-link" aria-current="page" href="./ouvidoria.php">Ouvidoria</a>
-        </li>
+        <?php 
+        if($user['auth'] == true)
+        {
+          echo '<li class="nav-item ">';
+          echo '<a id="link-ouvidoria" class="nav-link" aria-current="page" href="./ouvidoria.php">Ouvidoria</a>';
+          echo '</li>';
+        } 
+        ?>
+       
+         
+      
       </ul>
 
       <?php if($user['auth'] == false){
-               echo '<button class="btn btn-light me-2">Entrar</button>';
+               echo '<button class="btn btn-light me-2" data-bs-target="#modal-login" data-bs-toggle="modal">Entrar</button>';
                 echo '<button class="btn btn-outline-light" data-bs-target="#modal-create-account" data-bs-toggle="modal">Cadastrar-se</button>';
             } else{
 
@@ -454,37 +522,37 @@ $user = ['auth'=>false,'userName'=>'',];
       </div>
       <div class="modal-body">
         <div class="content p-4 row g-3">
-            <div class="col-sm-12 col-md-6">
+            <div class="col-sm-12 col-lg-6">
                 <label for="name" class="form-label">Nome Completo</label>
                 <input type="text" class="form-control" id="name" name="name" placeholder="Nome completo">
                 <div id="validation-name"></div>
             </div>
-            <div class="col-sm-5 col-md-3">
+            <div class="col-sm-5 col-lg-3">
                 <label for="date_birth" class="form-label">Data de Nascimento</label>
                 <input type="date" class="form-control" id="date-birth" name="date_birth" value="2005-01-10">
                 <div id="validation-date-birth"></div>
             </div>
-            <div class="col-sm-7 col-md-3">
+            <div class="col-sm-7 col-lg-3">
                 <label for="telephone" class="form-label">Telefone</label>
                 <input type="text" class="form-control" id="telephone" name="telephone" placeholder="Telefone">
                 <div id="validation-telephone"></div>
             </div>
-            <div class="col-sm-5 col-md-3">
+            <div class="col-sm-5 col-lg-3">
                 <label for="whatsapp" class="form-label">WhatsApp</label>
                 <input type="text" class="form-control" id="whatsapp" name="whatsapp" placeholder="WhatsApp">
                 <div id="validation-whatsapp"></div>
             </div>
-            <div class="col-sm-7 col-md-7">
+            <div class="col-sm-7 col-lg-7">
                 <label for="email" class="form-label">E-mail</label>
                 <input type="email" class="form-control" id="email" id="email" placeholder="E-mail">
                 <div id="validation-email"></div>
             </div>
-            <div class="col-sm-3 col-md-2">
+            <div class="col-sm-3 col-lg-2">
                 <label for="fu" class="form-label">UF</label>
                 <select name="fu" id="fu" class="form-select"></select>
                 <div id="validation-fu"></div>
             </div>
-            <div class="col-sm-9 col-md-5">
+            <div class="col-sm-9 col-lg-5">
                 <label for="city" class="form-label">Cidade</label>
                 <select name="city" id="city" class="form-select"></select>
                 <div id="validation-city"></div>
@@ -504,33 +572,40 @@ $user = ['auth'=>false,'userName'=>'',];
 <div class="modal fade modal-pq" id="modal-create-password" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5">Senha</h1> 
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
+     
       <div class="modal-create-password-body">
-          <div class="content p-4 row g-3 mt-5 mb-5">
-              <div class="row justify-content-md-center"> 
-                <div class="col-md-9">
+      
+            <div class="row my-5 justify-content-center"> 
+                <div class="col-8 col-sm-8 col-md-8">
+                    <h1 class="modal-title fs-5">Senha</h1> 
+                </div>
+                <div class="col-2 col-sm-1 col-md-1" style="display: flex; align-items: center;">
+                    <button type="button" style="margin-left: auto;" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="col-10 col-sm-9 col-md-9">
+                  <hr>
+                </div>
+                <div class="col-10 col-sm-9 col-md-9 mt-4">
                     <label for="password" class="form-label">Senha</label>
                     <input type="text" class="form-control" id="password" name="password" placeholder="Nova senha">
                     <div id="validation-password"></div>
                 </div>
-              </div>
-              <div class="row justify-content-md-center mt-4"> 
-                  <div class="col-md-9">
+            
+            
+                  <div class="col-10 col-sm-9 col-md-9 mt-4 mb-5">
                       <label for="password_comnfirm" class="form-label">Confirm sua senha</label>
                       <input type="text" class="form-control" id="password-comnfirm" name="password-comnfirm" placeholder="Confirme a senha">
                       <div id="validation-password-comnfirm"></div>
                   </div>
-              </div>
-        
-          </div>
+                  <div class="d-inline-flex gap-1 col-10 col-sm-9 col-md-9 mt-4">
+                    <button style="width: 50%;" type="button" data-bs-target="#modal-create-account" data-bs-toggle="modal" class="btn btn-secondary">Voltar</button>
+                    <button style="width: 50%;" id="btn-create-user" type="button" class="btn btn-primary">Próximo</button>
+                  </div>
+              
+            </div>
+           
       </div>
-      <div class="modal-footer">
-        <button type="button" data-bs-target="#modal-create-account" data-bs-toggle="modal" class="btn btn-secondary">Voltar</button>
-        <button id="btn-create-user" type="button" class="btn btn-primary">Enviar</button>
-      </div>
+    
     </div>
   </div>
 </div>
@@ -540,28 +615,76 @@ $user = ['auth'=>false,'userName'=>'',];
 <div class="modal fade modal-pq" id="modal-verification-code" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5">Código de Verificação</h1> 
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
       <div class="modal-verification-code-body">
-          <div class="content p-4 row g-3 mt-5 mb-5">
-              <div class="row justify-content-md-center"> 
-                <div class="col-md-9">
+          <div class="row my-5 justify-content-center ">
+             
+              <div class="col-8 col-sm-8 col-md-8">
+                    <h1 id="modal-login-title" class="modal-title fs-5">Código de Verificação</h1>
+                </div>
+                <div class="col-2 col-sm-1 col-md-1" style="display: flex; align-items: center;">
+                    <button type="button" style="margin-left: auto;" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="col-10 col-sm-9 col-md-9">
+                  <hr>
+                </div>
+
+                <div class="col-10 col-sm-9 col-md-9 mt-3">
                     <p style="font-size: medium;" class="mb-5">Enviamos um código de verificação para o seu e-mail.</p>
                     <label for="codigo-verificacao-email" class="form-label">Código</label>
                     <input type="text" class="form-control" id="codigo-verificacao-email" name="codigo-verificacao-email" placeholder="Código">
                     <div id="validation-codigo-verificacao-email" class="mb-5"></div>
-                   
                 </div>
+                <div class="d-grid gap-2 col-10 col-sm-9 col-md-9 mx-auto mt-5">
+                    <button id="btn-codigo-verificacao-email" type="button" class="btn btn-primary">Enviar</button>
+                </div>
+               
               </div>
-          </div>
-      </div>
-      <div class="modal-footer">
-        <button id="btn-codigo-verificacao-email" type="button" class="btn btn-primary">Enviar</button>
       </div>
     </div>
   </div>
 </div>
 <!-- FIM MODAL DE CODIGO DE VERIFICACAO -->
+
+<!-- COMEÇO Modal de LOGIN-->
+<div class="modal fade" id="modal-login" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
+  <div class="modal-dialog  modal-dialog-top">
+    <div class="modal-content">
+      <div id="body-modal-login" class="modal-body" style="display: flex; align-items: center;  flex-direction: row;">
+            <div class="row my-5 justify-content-center ">
+
+                <div class="col-10 col-sm-8 col-md-8">
+                    <h1 id="modal-login-title" class="modal-title fs-5">Entrar</h1>
+                </div>
+                <div class="col-2 col-sm-1 col-md-1" style="display: flex; align-items: center;">
+                    <button type="button" style="margin-left: auto;" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  
+                </div>
+                <div class="col-12 col-sm-9 col-md-9">
+                  <hr>
+                </div>
+                
+                <div class="col-12 col-sm-9 col-md-9 mt-4">
+              
+                    <label for="email-login" class="form-label">E-mail</label>
+                    <input type="text" class="form-control"  id="email-login" placeholder="E-mail...">
+                </div>
+                <div class="col-12 col-sm-9 col-md-9 mt-4">
+                    <label for="email-login" class="form-label">Senha</label>
+                    <input type="password" class="form-control" id="password-login" placeholder="Senha...">
+           
+                </div>
+                <div class="mt-4 col-12 col-sm-9 col-md-9">
+                    <a href="#">Esqueci minha senha</a>
+                </div>
+                <div class="d-grid gap-2 col-12 col-sm-9 col-md-9 mx-auto mt-5">
+                    <button id="btn-login" class="btn btn-success">Entrar</button>
+                </div>
+               
+               
+            </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- FIM Modal LOGIN -->
     

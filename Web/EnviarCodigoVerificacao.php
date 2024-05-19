@@ -1,10 +1,13 @@
 <?php
 
 include_once __DIR__."/Mail/EnviarEmail.php";
+include_once __DIR__."/../configuration/connect.php";
 
 class EnviarCodigoVerificacao
 {
     private $database;
+
+ 
 
     public function __construct()
     {
@@ -21,6 +24,7 @@ class EnviarCodigoVerificacao
 
     public function EnviarCodigo($email_form_cad, $name)
     {
+        session_start();
         $resul =  $this->database->pdo->prepare('DELETE FROM email_confirmation WHERE email = :email ');
         $resul->bindValue(":email", $email_form_cad);
         $resul->execute();
