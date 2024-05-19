@@ -1,62 +1,45 @@
-<?php require_once __DIR__ ."/layout/layoutStart.php";?>
+<?php 
+session_start();
+require_once __DIR__ ."/../Web/isLogged.php";
+require_once __DIR__ ."/layout/layoutStart.php";
+?>
 <div class="container">
+  
     <div class="row p-3 justify-content-center mt-5 ">
-        <div class="col-12 col-lg-7 col-7">
-            <label for="" class="form-label">Descrição do Caso</label>
-            <textarea name="description" class="form-control" id="description"></textarea>
-        </div>
+        <form class="row justify-content-center" id="form" enctype="multipart/form-data">
+            <div class="col-12 col-lg-7 col-7">
+                <label for="" class="form-label">Descrição do Caso</label>
+                <textarea name="description" class="form-control" id="description"></textarea>
+            </div>
 
-        <div class="col-12 col-lg-7 col-7">
-            <label for="" class="form-label">Tipo de Serviço Afetado</label>
-            <input type="text" id="service_type" name="service_type" class="form-control">
-        </div>
+            <div class="col-12 col-lg-7 col-7">
+                <label for="" class="form-label">Tipo de Serviço Afetado</label>
+                <input type="text" id="service_type" name="service_type" class="form-control">
+            </div>
 
-        <div class="col-12 col-lg-7 col-md-7">
-            <form id="form" enctype="multipart/form-data">
+            <div class="col-12 col-lg-7 col-md-7">
                 <label for="" class="form-label">Anexos</label>
                 <input class="form-control" name="files[]" id="files" type="file" multiple>
-            </form>
-         
-        </div>
+            </div>
+        </form>
         <div class="col-12 col-lg-7 col-md-7">
+      
             <button style="width: 100%;" id="send-attachments" class="btn btn-success mt-5" >Enviar</button>
         </div>
+    </div>
 
-        <script>
+        
+    <div id="content-img"></div>
+</div>
+
+
+<script>
                $(document).ready(()=>{
 
 $('#send-attachments').click(()=>{
 
-/*-------------------------------- INICIO FUNÇÃO PARA TRANSFORMAR ARQ EM BASE64 -----------------------------------------*/
-    // crio array q vai receber o valor em base64 dos arquivos
-    let files64 = []
-
-    // passo o array de arquivos do input files para variavel
-    files = $('#files')[0].files
-
-   // faço um foreach para percorres tds os itens do array de arquivos
-    $.each(files, function(index, value){
-
-        // instancio a classe FileRender para usar a função readAsDataURL 
-        var reader = new FileReader()
-        // le o conteudo do tipo file
-        reader.readAsDataURL($('#files')[0].files[index])
-
-        // quando termina ele me retorna a url codificada em base64
-        reader.onload = function(){
-
-        // pego o valor em base64
-        files64.push(reader.result) 
-
-        }
-
-    })
-
     var form = $('#form')[0]; // You need to use standard javascript object here
     var formData = new FormData(form);  
-    
-    
-    console.log(formData)
     
 
  
@@ -81,10 +64,9 @@ $.ajax({
 
         },
         error: function(response) {
-        
             
-        
-        
+            showModalMesage('error',response.responseJSON.title,response.responseJSON.message);
+            
         }
     });
 
@@ -142,7 +124,5 @@ $.ajax({
          
         </script>
 
-    </div>
-    <div id="content-img"></div>
-</div>
+
 <?php require_once __DIR__ ."/layout/layoutEnd.php" ?>

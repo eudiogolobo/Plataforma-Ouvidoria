@@ -1,6 +1,6 @@
 <?php 
-session_start();
 $user = ['auth'=>false,'userName'=>'',];
+echo var_dump(session_id());
 echo var_dump($_SESSION);
  $auth = false;
   if(isset($_SESSION['password']) && isset($_SESSION['email']))
@@ -31,7 +31,7 @@ echo var_dump($_SESSION);
 
     <link rel="stylesheet" href="../public/css/layout.css">
 
-    <title><?=$title?></title>
+    <title></title>
 </head>
 <body>
 
@@ -342,7 +342,7 @@ function ReenviarCodigoVerificacao(inputId)
 
           },
           error: function(response) {
-            showModalMesage('error',response.responseJSON.title,response.responseJSON.message,'modal-login');
+            showModalMesage('error',response.responseJSON.title,response.responseJSON.message,'modal-login','email-login');
           }
         });
 

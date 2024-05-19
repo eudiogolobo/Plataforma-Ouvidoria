@@ -1,6 +1,8 @@
 <?php
 
  include_once "../configuration/connect.php";
+ include_once __DIR__."/Auth/Auth.php";
+ 
 session_start();
 $database = new Database();
 
@@ -17,14 +19,13 @@ $result->bindValue(":sessionn",session_id());
 $result->bindValue(":code",$_GET['code']);
 $result->execute();
 
+session_destroy();
  $data = $result->fetchAll(PDO::FETCH_ASSOC);
 
  if(count($data) > 0)
  {
 
-    $_SESSION['userName'] = $data[0]['name'];
-    $_SESSION['email'] = $data[0]['email'];
-    $_SESSION['password'] = $data[0]['password'];
+  
 
     $result = $database->pdo->prepare('DELETE FROM email_confirmation WHERE id = :id ');
     $result->bindValue(":id",$data[0]['id']);
@@ -34,6 +35,9 @@ $result->execute();
     $result->bindValue(":status","ATIVO");
     $result->bindValue(":email",$data[0]['email']);
     $result->execute();
+
+    $auth = new Auth();
+    $auth->login($data[0]['email'], $data[0]['password']);
 
 
 

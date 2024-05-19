@@ -204,7 +204,7 @@ function validField(idField, personalizedName,modalId)
  // e na div da mensagem em baixo do input dai retorna false
  if($('#'+idField+'').val() == '')
        {
-         showModalMesage('error','Campo inválido', 'Campo obrigatório '+personalizedName+' em branco',modalId,idField); 
+         showModalMesage('error','Campo inválido', 'Campo obrigatório '+personalizedName+' em branco!',modalId,idField); 
          $('#'+idField).removeClass('is-valid')
          $('#validation-'+idField).removeClass('is-valid')
 
