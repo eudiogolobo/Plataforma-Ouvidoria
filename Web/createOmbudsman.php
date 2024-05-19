@@ -73,15 +73,29 @@ $user_id = $_SESSION['id'];
  {
     for($i = 0; $i < count($_FILES["files"]["name"]); $i++)
     {
+            // pego o nome do file na posição $i
+            $file_name = $_FILES["files"]["name"][$i];
+            // pego o tamanho do file na posição $i
+            $file_size = $_FILES["files"]["size"][$i]; 
+            // divido o nome do arquivo em duas partes (nome, extensão)
+            $partes = explode(".", $file_name);
+            // passo a extensão pegando o ultimo item do array $partes
+            $extensao = end($partes);
+
+            $name = $partes[0];
+
+
             $file_tmp = $_FILES["files"]["tmp_name"][$i]; //NOME DO ARQUIVO NO COMPUTADOR
 
             $binario = file_get_contents($file_tmp); // evitamos erro de sintaxe do MySQL
             $base64 = base64_encode($binario);
             //$img = 'data:image/'.$extensao.';base64,'.$base64;
                          
-             $insert_arquivo = $database->pdo->prepare("INSERT INTO attachments(ombudsman_id, attachment) VALUES (:ombudsman_id, :base64)");
+             $insert_arquivo = $database->pdo->prepare("INSERT INTO attachments(ombudsman_id, attachment, name, extension) VALUES (:ombudsman_id, :base64, :name, :extension)");
              $insert_arquivo->bindValue(':ombudsman_id',$ombudsman_id);
              $insert_arquivo->bindValue(':base64',$base64);
+             $insert_arquivo->bindValue(':name', $name);
+             $insert_arquivo->bindValue(':extension',$extensao);
              $result_insert_arquivo = $insert_arquivo->execute();
              if(!$result_insert_arquivo)
              {

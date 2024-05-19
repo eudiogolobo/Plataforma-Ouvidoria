@@ -4,9 +4,47 @@ include_once __DIR__."/../Web/isLogged.php";
 include_once __DIR__."/layout/layoutStart.php";
 ?>
 
-<style>
-  
-</style>
+
+<!-- COMEÇO MODAL DE FILES -->
+<div class="modal fade modal-lg" id="modal-view-files" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="content p-4 row g-3 m-3">
+            <div class="col-10 col-sm-11 col-md-11">
+              <h1 class="modal-title fs-5" id="exampleModalLabel">Visualizar Anexos</h1> 
+            </div>
+            <div class="col-2 col-sm-1 col-md-1" style="display: flex; align-items: center;">
+                <button type="button" style="margin-left: auto;" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            
+            <hr>
+            <div class="col-12 col-sm-12 col-md-12 col-lg-12">
+                <table id="table-files" class="table table-striped table-hover mt-5">
+                    <thead >     
+                        <tr>
+                            <th class="d-none d-sm-table-cell">Nome</th>
+                            <th  class="d-none d-lg-table-cell">Extensão</th>
+                            <th  class="d-none d-lg-table-cell">Ação</th>
+                        </tr>
+                    </thead>
+                    <tbody id="data-files"></tbody>
+                
+                </table>
+            </div>
+
+            
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- FIM MODAL DE FILES -->
+
+<button id="btn-baixar" type="button" style="margin-left: auto;" class="btn btn-success">Baixar</button>
+<script>
+    
+</script>
 <div class="container">
     <div class="row mt-5">
         <h1 class="mb-4">Minhas Ouvidorias Abertas</h1>
@@ -50,7 +88,54 @@ include_once __DIR__."/layout/layoutStart.php";
 
 
 <script>
+    function loadFilesOmbudsman(ombudsman_id)
+    {
+        $.ajax({
+            url: "../web/loadFilesOmbudsman.php",
+            type: "GET",
+            data:{'ombudsman_id': ombudsman_id},
+            success: (response)=>{
+              
+                    $('#data-files').html('')
+                    $.each(response.data, function(index, value){
+
+                    htmlData = "<tr>";
+
+                    htmlData += '<td>' + value.name + '</td>';
+
+                    htmlData += '<td>' + value.extension + '</td>';
+
+                    htmlData += '<td style="justify-content:center;vertical-align: middle; ">  <button data-bs-target="#modal-view-files" data-bs-toggle="modal" class="btn btn-secondary"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16"><path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/><path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"/></svg></button></td>';
+
+                    htmlData += "</tr>";
+                    $('#data-files').append(htmlData)
+                    })
+               
+            },
+            error: ()=>{
+
+            },
+        })
+    }
     $(document).ready(()=>{
+
+        function baixarArq64(name, extensao, base64)
+        {
+            var link = document.createElement("a");
+            document.body.appendChild(link);
+            link.setAttribute("type", "hidden");
+            link.href = "data:text/plain;base64," + result;
+            link.download = "data.zip";
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        $('#btn-baixar').click(()=>{
+
+            
+            
+        })
+        
         $('#link-ouvidoria').addClass('active');
         searchOmbudsman()
         $('#search').click(()=>{
@@ -80,7 +165,7 @@ include_once __DIR__."/layout/layoutStart.php";
 
                     htmlData += '<td>' + value.service_type + '</td>';
 
-                    htmlData += '<td style="justify-content:center;vertical-align: middle; ">  <button class="btn btn-secondary"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16"><path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/><path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"/></svg></button></td>';
+                    htmlData += '<td style="justify-content:center;vertical-align: middle; ">  <button onclick="loadFilesOmbudsman('+value.id+')" data-bs-target="#modal-view-files" data-bs-toggle="modal" class="btn btn-secondary"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16"><path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/><path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"/></svg></button></td>';
 
                     htmlData += "</tr>";
                     $('#data-search-ombudsman').append(htmlData)
