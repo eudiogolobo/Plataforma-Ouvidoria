@@ -34,10 +34,14 @@ require_once __DIR__ ."/layout/layoutStart.php";
 
 
 <script>
-               $(document).ready(()=>{
+$(document).ready(()=>{
 
 $('#send-attachments').click(()=>{
 
+    if(validField('description','descrição do caso') == false || validField('service_type','tipo de serviço afetado') == false || validField('files','anexos') == false)
+    {
+        return false;
+    }
     var form = $('#form')[0]; // You need to use standard javascript object here
     var formData = new FormData(form);  
     
@@ -56,8 +60,9 @@ $.ajax({
         beforeSend:function(){
      
         },
-        success: function() {
-         
+        success: function(response) {
+            showModalMesage('success','Mensagem!', 'Enviado com sucesso!');
+            showModalMesage('success','Conta Verificada!','Parabéns, seu cadastro foi concluído com sucesso!','','','http://localhost/plataforma-ouvidoria/views/');
         },
         complete:function(){
       
@@ -65,7 +70,7 @@ $.ajax({
         },
         error: function(response) {
             
-            showModalMesage('error',response.responseJSON.title,response.responseJSON.message);
+            showModalMesage('error',response.responseJSON.title,response.responseJSON.message,'','files');
             
         }
     });
