@@ -1,7 +1,7 @@
 <?php 
 session_start();
 $user = ['auth'=>false,'userName'=>'',];
-
+echo var_dump($_SESSION);
  $auth = false;
   if(isset($_SESSION['password']) && isset($_SESSION['email']))
   {

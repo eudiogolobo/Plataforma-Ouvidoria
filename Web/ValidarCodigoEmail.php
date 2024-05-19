@@ -21,6 +21,7 @@ $result->execute();
 
  if(count($data) > 0)
  {
+
     $_SESSION['userName'] = $data[0]['name'];
     $_SESSION['email'] = $data[0]['email'];
     $_SESSION['password'] = $data[0]['password'];

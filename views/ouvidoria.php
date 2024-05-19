@@ -1,23 +1,98 @@
 <?php require_once __DIR__ ."/layout/layoutStart.php";?>
 <div class="container">
-    <div class="row p-3">
-        <div class="col-12 col-lg-6 col-6">
+    <div class="row p-3 justify-content-center mt-5 ">
+        <div class="col-12 col-lg-7 col-7">
             <label for="" class="form-label">Descrição do Caso</label>
             <textarea name="description" class="form-control" id="description"></textarea>
         </div>
 
-        <div class="col-12 col-lg-6 col-6">
+        <div class="col-12 col-lg-7 col-7">
             <label for="" class="form-label">Tipo de Serviço Afetado</label>
             <input type="text" id="service_type" name="service_type" class="form-control">
         </div>
 
-        <div class="col-12 col-lg-6 col-md-6">
-            <label for="" class="form-label">Anexos</label>
-            <input class="form-control" id="files" type="file" multiple>
+        <div class="col-12 col-lg-7 col-md-7">
+            <form id="form" enctype="multipart/form-data">
+                <label for="" class="form-label">Anexos</label>
+                <input class="form-control" name="files[]" id="files" type="file" multiple>
+            </form>
+         
+        </div>
+        <div class="col-12 col-lg-7 col-md-7">
+            <button style="width: 100%;" id="send-attachments" class="btn btn-success mt-5" >Enviar</button>
         </div>
 
-        <button id="send-attachments" class="btn btn-success mt-4" >Enviar</button>
         <script>
+               $(document).ready(()=>{
+
+$('#send-attachments').click(()=>{
+
+/*-------------------------------- INICIO FUNÇÃO PARA TRANSFORMAR ARQ EM BASE64 -----------------------------------------*/
+    // crio array q vai receber o valor em base64 dos arquivos
+    let files64 = []
+
+    // passo o array de arquivos do input files para variavel
+    files = $('#files')[0].files
+
+   // faço um foreach para percorres tds os itens do array de arquivos
+    $.each(files, function(index, value){
+
+        // instancio a classe FileRender para usar a função readAsDataURL 
+        var reader = new FileReader()
+        // le o conteudo do tipo file
+        reader.readAsDataURL($('#files')[0].files[index])
+
+        // quando termina ele me retorna a url codificada em base64
+        reader.onload = function(){
+
+        // pego o valor em base64
+        files64.push(reader.result) 
+
+        }
+
+    })
+
+    var form = $('#form')[0]; // You need to use standard javascript object here
+    var formData = new FormData(form);  
+    
+    
+    console.log(formData)
+    
+
+ 
+/*-------------------------------- FIM BASE64 -----------------------------------------*/
+$.ajax({
+        type: "POST",
+        enctype: 'multipart/form-data',
+        url: "../web/createOmbudsman.php",
+        data:formData,
+        processData: false,
+        contentType: false,
+        cache: false,
+        timeout: 600000,
+        beforeSend:function(){
+     
+        },
+        success: function() {
+         
+        },
+        complete:function(){
+      
+
+        },
+        error: function(response) {
+        
+            
+        
+        
+        }
+    });
+
+    
+  
+})
+
+})
 
 
         // add class active ao item do menu principal
@@ -43,6 +118,8 @@
 
                 })
 
+            
+
                
                 console.log(files64)
 
@@ -62,73 +139,7 @@
                 //let clean = atob(b64)
                 //alert(clean)
             }
-            $(document).ready(()=>{
-
-                $('#send-attachments').click(()=>{
-
-        /*-------------------------------- INICIO FUNÇÃO PARA TRANSFORMAR ARQ EM BASE64 -----------------------------------------*/
-                    // crio array q vai receber o valor em base64 dos arquivos
-                    let files64 = {}
-              
-                    // passo o array de arquivos do input files para variavel
-                    files = $('#files')[0].files
-
-                   // faço um foreach para percorres tds os itens do array de arquivos
-                    $.each(files, function(index, value){
-
-                        // instancio a classe FileRender para usar a função readAsDataURL 
-                        var reader = new FileReader()
-                        // le o conteudo do tipo file
-                        reader.readAsDataURL($('#files')[0].files[index])
-
-                        // quando termina ele me retorna a url codificada em base64
-                        reader.onload = function(){
-
-                        // pego o valor em base64
-                        files64[index] = reader.result
-
-                        }
-
-                    })
-
-                     console.log(files64)
-   /*-------------------------------- FIM BASE64 -----------------------------------------*/
-                    
-
-                    
-                    $.ajax({
-                        url: "../web/createOmbudsman.php",
-                        type: 'POST',
-                        contentType: false,
-                        processData: false,
-                        data: {
-                            'description' : $('#description').val(),
-                            'service_type' : $('#service_type').val(),
-                            'files' : JSON.stringify(files64),
-                        },
-                        beforeSend:function()
-                        {
-                            $('#send-attachments').html('<span style="margin-right:5px" class="spinner-border spinner-border-sm" aria-hidden="true"><span>Enviando...</span>')
-                            $('#send-attachments').attr('disabled', true);
-                        },
-                        success:function()
-                        {
-
-                        },
-                        complete:function()
-                        {
-                            $('#send-attachments').html('Enviar')
-                            $('#send-attachments').attr('disabled', false);
-                        },
-                        error:function()
-                        {
-
-                        },
-
-                    })
-                })
-
-            })
+         
         </script>
 
     </div>

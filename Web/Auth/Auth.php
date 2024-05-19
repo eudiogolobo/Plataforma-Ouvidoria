@@ -19,7 +19,7 @@ class Auth{
 
             $this->banco->connection();
 
-            $this->statement =  $this->banco->pdo->prepare(" SELECT name FROM users WHERE email = :email AND password = :password AND status = 'ATIVO' ");
+            $this->statement =  $this->banco->pdo->prepare(" SELECT id, name FROM users WHERE email = :email AND password = :password AND status = 'ATIVO' ");
 
             $this->statement->bindParam(':email' , $email);
             $this->statement->bindParam(':password' , $password);
@@ -30,7 +30,7 @@ class Auth{
 
           
              if(count($this->result) > 0)
-             {
+             {  $_SESSION['id'] =  $this->result[0]['id'];
                 $_SESSION['userName'] =  $this->result[0]['name'];
                 $_SESSION['email'] = $email;
                 $_SESSION['password'] = $password;
