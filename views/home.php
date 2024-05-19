@@ -47,11 +47,9 @@ require_once __DIR__ ."/layout/layoutStart.php";
 </div>
 <!-- FIM MODAL DE LISTAGEM OUVIDORIA -->
 
-<div class="container p-3">
+<div class="container mt-5">
 
-
-<h1 class="mt-3">Portal de ouvidoria | Criciúma/SC</h1>
-
+    <h1 class="mt-3">Portal de ouvidoria | Criciúma/SC</h1>
 
     <div class="container p-3">
         <h5>Como usar este recurso</h5>
@@ -73,32 +71,12 @@ require_once __DIR__ ."/layout/layoutStart.php";
                 <li>Confirme o envio.<img src="#" alt=""></li>
             </ul>
         </ul>
-
     </div>
-   
-    <table class="table">
-       
-        <thead>     
-            <tr>
-                <th>User</th>
-            </tr>
-        </thead>
-        <tbody>
-            
-           
-        </tbody>
-        
-    </table>
-
 </div>
 
 <script>
       // add class active ao item do menu principal
-
       $('#link-main').addClass('active');
 </script>
 
-
-   
-    
 <?php require_once __DIR__ ."/layout/layoutEnd.php" ?>

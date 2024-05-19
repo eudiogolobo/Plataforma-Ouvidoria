@@ -4,25 +4,30 @@ require_once __DIR__ ."/../Web/isLogged.php";
 require_once __DIR__ ."/layout/layoutStart.php";
 ?>
 <div class="container">
-  
-    <div class="row p-3 justify-content-center mt-5 ">
+    <div class="row justify-content-center mt-5 ">
+        <div class="col-12 col-lg-7 col-7 d-inline-flex gap-1 mb-5"> 
+            <h1>Abertuda de ouvidoria</h1>
+        </div>
         <form class="row justify-content-center" id="form" enctype="multipart/form-data">
             <div class="col-12 col-lg-7 col-7">
                 <label for="" class="form-label">Descrição do Caso</label>
-                <textarea name="description" class="form-control" id="description"></textarea>
+                <textarea name="description" class="form-control" id="description" maxlength="500" style="height: 190px; resize: none;"></textarea>
+                <div id="validation-description"></div>
             </div>
 
-            <div class="col-12 col-lg-7 col-7">
+            <div class="col-12 col-lg-7 col-7 mt-4">
                 <label for="" class="form-label">Tipo de Serviço Afetado</label>
-                <input type="text" id="service_type" name="service_type" class="form-control">
+                <input type="text" id="service_type" name="service_type" class="form-control" maxlength="50">
+                <div id="validation-service_type"></div>
             </div>
 
-            <div class="col-12 col-lg-7 col-md-7">
+            <div class="col-12 col-lg-7 col-7 mt-4">
                 <label for="" class="form-label">Anexos</label>
                 <input class="form-control" name="files[]" id="files" type="file" multiple>
+                <div id="validation-files"></div>
             </div>
         </form>
-        <div class="col-12 col-lg-7 col-md-7">
+        <div class="col-12 col-lg-7 col-7">
       
             <button style="width: 100%;" id="send-attachments" class="btn btn-success mt-5" >Enviar</button>
         </div>
@@ -61,8 +66,22 @@ $.ajax({
      
         },
         success: function(response) {
-            showModalMesage('success','Mensagem!', 'Enviado com sucesso!');
-            showModalMesage('success','Conta Verificada!','Parabéns, seu cadastro foi concluído com sucesso!','','','http://localhost/plataforma-ouvidoria/views/');
+            showModalMesage('success','Mensagem!', 'Enviado com sucesso!','','');
+            $('#files').val('');
+            $('#service_type').val('');
+            $('#description').val('');
+
+            $('#description').removeClass();
+            $('#files').removeClass();
+            $('#service_type').removeClass();
+
+            $('#description').addClass('form-control');
+            $('#files').addClass('form-control');
+            $('#service_type').addClass('form-control');
+
+
+
+            $('#description').focus();
         },
         complete:function(){
       

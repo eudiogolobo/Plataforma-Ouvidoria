@@ -1,7 +1,7 @@
 <?php 
 $user = ['auth'=>false,'userName'=>'',];
-echo var_dump(session_id());
-echo var_dump($_SESSION);
+//echo var_dump(session_id());
+//echo var_dump($_SESSION);
  $auth = false;
   if(isset($_SESSION['password']) && isset($_SESSION['email']))
   {
@@ -146,7 +146,9 @@ function ReenviarCodigoVerificacao(inputId)
 
             $(this).removeAttr('data-bs-target')
             $(this).removeAttr('data-bs-toggle')
+          
             setTimeout(() => {
+              $('#btn-ok-modal-mesage').removeAttr('onclick')
                 $(this).removeClass()
                 $(this).addClass('btn btn-success')
             }, 500);
@@ -353,6 +355,11 @@ function ReenviarCodigoVerificacao(inputId)
 
   $('#btn-codigo-verificacao-email').click(()=>{
 
+    if(validField('codigo-verificacao-email', 'código','modal-verification-code') == false)
+    {
+      return ;
+    }
+
     $.ajax({
           type: "GET",
           url: "../web/ValidarCodigoEmail.php",
@@ -467,11 +474,17 @@ function ReenviarCodigoVerificacao(inputId)
         <li class="nav-item ">
           <a id="link-main" class="nav-link" aria-current="page" href="./home.php">Principal</a>
         </li>
+
+       
         <?php 
         if($user['auth'] == true)
         {
-          echo '<li class="nav-item ">';
-          echo '<a id="link-ouvidoria" class="nav-link" aria-current="page" href="./ouvidoria.php">Ouvidoria</a>';
+          echo '<li class="nav-item dropdown">';
+          echo   '<button id="link-ouvidoria" class="nav-link dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Ouvidorias</button>';
+          echo    '<ul class="dropdown-menu">';
+          echo      '<li><a  class="dropdown-item" href="./ouvidoria.php">Nova</a></li>';
+          echo      '<li><a  class="dropdown-item" href="./ouvidoriaListar.php">Ver Minhas</a></li>';
+          echo     '</ul>';
           echo '</li>';
         } 
         ?>
@@ -516,12 +529,17 @@ function ReenviarCodigoVerificacao(inputId)
 <div class="modal fade modal-lg" id="modal-create-account" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Informações Pessoais</h1> 
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
       <div class="modal-body">
-        <div class="content p-4 row g-3">
+        <div class="content p-4 row g-3 m-3">
+            <div class="col-10 col-sm-11 col-md-11">
+              <h1 class="modal-title fs-5" id="exampleModalLabel">Informações Pessoais</h1> 
+            </div>
+            <div class="col-2 col-sm-1 col-md-1" style="display: flex; align-items: center;">
+                <button type="button" style="margin-left: auto;" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            
+            <hr>
+            
             <div class="col-sm-12 col-lg-6">
                 <label for="name" class="form-label">Nome Completo</label>
                 <input type="text" class="form-control" id="name" name="name" placeholder="Nome completo">
@@ -557,11 +575,12 @@ function ReenviarCodigoVerificacao(inputId)
                 <select name="city" id="city" class="form-select"></select>
                 <div id="validation-city"></div>
             </div>
+            <div style="display:flex;justify-content: end;" class="gap-2">
+                <button style="width: 100px;" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                <button style="width: 100px;"  id="btn-prox-modal-create-account" type="button" class="btn btn-primary">Próximo</button>
+            </div>
+            
         </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" onmouseleave="" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-        <button id="btn-prox-modal-create-account" type="button" class="btn btn-primary">Próximo</button>
       </div>
     </div>
   </div>
