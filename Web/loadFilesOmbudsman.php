@@ -19,7 +19,7 @@ if(isset($_GET['ombudsman_id']))
     }
 
     // Faço a pesquisa para trazer todos os arquivos onde o ombudsman_id seja igual ao id passado via GET
-    $result = $dataBase->pdo->prepare('SELECT * FROM attachments WHERE ombudsman_id = :ombudsman_id ');
+    $result = $database->pdo->prepare('SELECT * FROM attachments WHERE ombudsman_id = :ombudsman_id ');
     $result->bindValue(':ombudsman_id', $_GET['ombudsman_id']);
     $result->execute();
 

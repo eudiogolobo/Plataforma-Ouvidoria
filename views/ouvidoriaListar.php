@@ -99,6 +99,8 @@ include_once __DIR__."/layout/layoutStart.php";
             data:{'ombudsman_id': ombudsman_id},
             success: (response)=>{
               
+                console.log(response.data.length)
+                var qtd = response.data.length
                    //Limpa o HTML do TBody da tabela
                     $('#data-files').html('')
 
@@ -120,7 +122,7 @@ include_once __DIR__."/layout/layoutStart.php";
                    
                     })
                     // Add a quantidade de resultados de anexos dessa ouvidoria aberta
-                    $('#count-data-files').html('Total de anexos: '+response.data.length)
+                    $('#count-data-files').html('Total de anexos: '+qtd)
                
             },
             error: ()=>{
@@ -171,6 +173,7 @@ include_once __DIR__."/layout/layoutStart.php";
                 // Vê se retornou algo
                 if(response.data.length > 0)
                 {
+                    var qtd = response.data.length
                     //Limpa o HTML do TBody da tabela
                     $('#data-search-ombudsman').html('')
 
@@ -198,7 +201,7 @@ include_once __DIR__."/layout/layoutStart.php";
                     })
 
                     // Passa a quantidade de registros totais
-                    $('#count-data-search').html('Qtd. de resultados: '+response.data.length)
+                    $('#count-data-search').html('Qtd. de resultados: '+qtd)
 
                 } else{
 

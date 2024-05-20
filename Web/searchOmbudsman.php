@@ -1,5 +1,6 @@
 <?php
 
+
 // Vejo se tem uma requisição GET em conformes
 if(isset($_GET['textSearch']))
 {
@@ -26,14 +27,14 @@ if(isset($_GET['textSearch']))
 
     // Realizo a pesquisa para retornar todas as ouvidorias abertas do usuário de acordo com o 
     // texto passado via GET pesquisando tanto pela descrição quanto pelo tipo de serviço afetado
-    $result = $dataBase->pdo->prepare('SELECT * FROM ombudsman WHERE user_id = :user_id AND ( description LIKE :text OR service_type LIKE :text ) ');
+    $result = $database->pdo->prepare('SELECT * FROM ombudsman WHERE user_id = :user_id AND ( description LIKE :text OR service_type LIKE :text ) ');
     $result->bindValue(':user_id', $_SESSION['id']);
     $result->bindValue(':text',"%$text%");
     $result->execute();
 
     // Retorno o array do resultado da pesquisa
     header('Content-Type: application/json; charset=UTF-8');
-    die(json_encode(array('data'=>$result->fetchAll(PDO::FETCH_ASSOC))));
+    return die(json_encode(array('data'=>$result->fetchAll(PDO::FETCH_ASSOC))));
     
 }
 

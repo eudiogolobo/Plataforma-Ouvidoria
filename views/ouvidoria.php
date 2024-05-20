@@ -6,7 +6,7 @@ require_once __DIR__ ."/../Web/isLogged.php";
 require_once __DIR__ ."/layout/layoutStart.php";
 ?>
 <div class="container">
-    <div class="row justify-content-center mt-5 ">
+    <div class="row justify-content-center mt-5 mb-localhost ">
         <div class="col-12 col-lg-7 col-7 d-inline-flex gap-1 mb-5"> 
             <h1>Abertuda de ouvidoria</h1>
         </div>
