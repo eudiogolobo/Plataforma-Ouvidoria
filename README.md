@@ -4,7 +4,7 @@
 Projeto realizado à partir do desafio proposto pela empresa [Web Brain](https://www.webbrain.com.br/), visando projetar e programar uma plataforma de ouvidoria online para uma "prefeitura". Na parte de cadastro me inspirei na [Amazon Web Service](https://aws.amazon.com/pt/ses/), com etapas e tudo mais...
 
 ## Sobre o Projeto
-A [estrutura e organização](./STRUCTURE) do projeto está de maneira clara e objetiva explicando tudo em forma de comentários e exemplificações.
+A [estrutura e organização](./STRUCTURE.md) do projeto está de maneira clara e objetiva explicando tudo em forma de comentários e exemplificações.
 
 
 ## Desafio Proposto
