@@ -12,7 +12,7 @@
 - Insira o arquivo SQL no banco de dados MySQL
 - Pronto 🔥🔥
 
-## Estrtutura do Projeto
+## Estrutura do Projeto
 
 - `./configuration` : Responsável pelo arquivo da Classe de conexão ao banco de dados
 - `./public` : Responsável pelas pastas públicas (`/css`, `/img`, `/Js`, `json`)
