@@ -5,7 +5,7 @@
 if(isset($_GET['textSearch']))
 {
     // Incluo meu arquivo responsável da coneção com o Database
-    include_once __DIR__."/../configuration/connect.php";
+    include_once __DIR__."/../configuration/Database.php";
 
     // Retomo a sessão
     session_start();

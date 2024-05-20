@@ -5,7 +5,7 @@ if(isset($_POST['email']))
 {
 
         // Inclúi o arquivo do Database
-        include_once "../configuration/connect.php";
+        include_once "../configuration/Database.php";
 
         // Instância uma nova classe para conectar o Database
         $database = new Database();

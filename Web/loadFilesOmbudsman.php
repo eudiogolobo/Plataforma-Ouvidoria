@@ -4,7 +4,7 @@
 if(isset($_GET['ombudsman_id']))
 {
     // Incluo meu arquivo para acessar o Database
-    include_once __DIR__."/../configuration/connect.php";
+    include_once __DIR__."/../configuration/Database.php";
 
     // Intâncio o Database
     $database = new Database();

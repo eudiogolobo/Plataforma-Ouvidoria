@@ -1,7 +1,7 @@
 <?php
 
 include_once __DIR__."/EnviarEmail.php";
-include_once __DIR__."/../../configuration/connect.php";
+include_once __DIR__."/../../configuration/Database.php";
 
 // Classe para realizar os envios de código de verificação
 class EnviarCodigoVerificacao

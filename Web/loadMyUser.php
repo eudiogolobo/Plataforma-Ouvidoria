@@ -1,7 +1,7 @@
 <?php
 
     // Arquivo de conexão ao Database 
-    require_once __DIR__."/../configuration/connect.php";
+    require_once __DIR__."/../configuration/Database.php";
 
     // Intâncio o Database
     $database = new Database();

@@ -3,7 +3,7 @@
 // verifico se existe as requisições POST para maior segurança...
 if(isset($_FILES["files"]) &&  isset($_POST['service_type']) && isset($_POST['description']))
 {
-         include_once __DIR__."/../configuration/connect.php";
+         include_once __DIR__."/../configuration/Database.php";
 	
 
         // Tamanho máximo dos arquivos permitidos (em Bytes)

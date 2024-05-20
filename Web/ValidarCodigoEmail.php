@@ -4,7 +4,7 @@ if(isset($_GET['code']))
 {
    // Incluo meus arquivos para conectar ao Db e fazer o login
    // quando válidar o código
-      include_once "../configuration/connect.php";
+      include_once "../configuration/Database.php";
       include_once __DIR__."/Auth/Auth.php";
       
       // retomo a sessão

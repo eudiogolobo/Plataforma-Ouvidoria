@@ -4,7 +4,7 @@
  if(isset($_POST['name']) && isset($_POST['date-birth']) && isset($_POST['email']) && isset($_POST['telephone']) && isset($_POST['whatsapp']) && isset($_POST['password']) && isset($_POST['password_comnfirm']) && isset($_POST['city']) && isset($_POST['fu']))
  {
     // Incluo meus arquivos
-    include_once "../configuration/connect.php";
+    include_once "../configuration/Database.php";
     include_once __DIR__."/Mail/EnviarCodigoVerificacao.php";
 
     // Retomo sessão

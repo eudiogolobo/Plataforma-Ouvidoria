@@ -1,5 +1,5 @@
 <?php
-include_once __DIR__."/../../configuration/connect.php";
+include_once __DIR__."/../../configuration/Database.php";
 // Inicia a sessão para utilizar variáveis de sessão
 class Auth{
     // Variáveis privadas
