@@ -57,6 +57,7 @@ function ReenviarCodigoVerificacao(inputId)
 
             },
             error: function(response) {
+              
             }
           });
     
@@ -194,31 +195,35 @@ function ReenviarCodigoVerificacao(inputId)
             url: "../web/verificaEmail.php",
             data: {'email' : $('#email').val()},
             beforeSend:function(){
+              // Desabilita botão e adiciona spinner de carregamento
               $('#btn-prox-modal-create-account').prop('disabled',true)
               $('#btn-prox-modal-create-account').html('<span style="margin-right:5px" class="spinner-border spinner-border-sm" aria-hidden="true">')
             },
             success: function() {
 
+              // Caso não retorne erro abre o próximo modal de criação de senha
               $('#modal-create-account').modal('hide')
               $('#modal-create-password').modal('show')
 
             },
             complete:function(){
+              // Desabilita botão e remove spinner 
               $('#btn-prox-modal-create-account').prop('disabled',false)
               $('#btn-prox-modal-create-account').html('Próximo')
 
             },
             error: function(response) {
+              // Retorna erro de conexão com banco de dados
               if(response.responseJSON.code == 1001)
               {
                 showModalMesage('error',response.responseJSON.title,response.responseJSON.message,'modal-create-account');
               }else
-
+              // Retorna erro de e-mail já cadastrado
               if(response.responseJSON.code == 1002)
               {
                 showModalMesage('error',response.responseJSON.title,response.responseJSON.message,'modal-create-account','email');
               }
-
+              // Retorna modal de opções para reenviar código de confirmação para o e-mail
               if(response.responseJSON.code == 1003)
               {
                 ShowModalOptions('reenviarCodigo',response.responseJSON.title,response.responseJSON.message,'modal-verification-code','codigo-verificacao-email', 'modal-create-account','email');
@@ -237,11 +242,13 @@ function ReenviarCodigoVerificacao(inputId)
   $('#btn-create-user').click(function(){
 
 
+    // Faz validação dos campos em branco
     if(validField('password','senha','modal-create-password') == false || validField('password-comnfirm','confirmação de senha','modal-create-password') == false){
       return
     }
 
 
+    // Verifica se senha é maior que 8 caracteres
     if( $('#password').val().length < 8)
     {
       showModalMesage('error','Senha inválida','A senha deve ter no mínimo 8 caracteres.','modal-create-password');
@@ -249,6 +256,7 @@ function ReenviarCodigoVerificacao(inputId)
       return
     }
 
+    // Verifica se senha e confirmação de senha são iguais
     if( $('#password').val() != $('#password-comnfirm').val())
     {
       showModalMesage('error','Senha inválida','A senha e a confirmação de senha não são iguais.','modal-create-password');
@@ -256,6 +264,7 @@ function ReenviarCodigoVerificacao(inputId)
       return
     }
 
+    // cria objeto com os valores dos campos 
     dataUser = {
       'name':$('#name').val(),
       'date-birth': $('#date-birth').val(),
@@ -274,14 +283,16 @@ function ReenviarCodigoVerificacao(inputId)
           url: "../web/createUser.php",
           data: dataUser,
           beforeSend:function(){
-            //$('#modal-create-password').modal('hide');
-             // $('#modal-verification-code').modal('show');
+           
+            // Abre modal de cadastro concluído
              showModalMesage('success','Parabéns!','Seu cadastro foi realizado com sucesso!','modal-verification-code')
-              $('#btn-create-user').prop('disabled',true)
+             // Desabilita o botão de Próximo
+             $('#btn-create-user').prop('disabled',true)
+             // Add spinner 
               $('#btn-create-user').html('<span style="margin-right:5px" class="spinner-border spinner-border-sm" aria-hidden="true">')
           },
           success: function() {
-            // Coloque aqui as instruções para fechar o dialog
+            // Limpa os campos
             $('#name').val('')
             $('#date-birth').val('')
             $('#email').val('')
@@ -292,6 +303,7 @@ function ReenviarCodigoVerificacao(inputId)
             $('#city').val('')
             $('#fu').val('')
 
+            // Remove as classes 
             $('#name').removeClass('is-valid')
             $('#date-birth').removeClass('is-valid')
             $('#email').removeClass('is-valid')
@@ -303,14 +315,13 @@ function ReenviarCodigoVerificacao(inputId)
             $('#fu').removeClass('is-valid')
           },
           complete:function(){
+             // Abilita o Próximo, remove o spinner a add texto "Próximo"
               $('#btn-create-user').prop('disabled',false)
               $('#btn-create-user').html('Próximo')
 
             },
           error: function(response) {
-            // Aqui você trata um erro que possa vir a ocorrer
-            // Exemplo:
-            console.log(response)
+            // Tratamento de erro
             showModalMesage('error',response.responseJSON.title,response.responseJSON.message,'modal-create-password');
 
           }
@@ -324,26 +335,30 @@ function ReenviarCodigoVerificacao(inputId)
   
   $('#btn-login').click(()=>{
 
+    // Faz requisição para logar
     $.ajax({
           type: "POST",
           url: "../web/login.php",
           data: {'email' : $('#email-login').val(), 'password': $('#password-login').val()},
           beforeSend:function(){
+             // Abilita o botão de logar e adiciona o spinner nele
             $('#btn-login').prop('disabled',true)
             $('#btn-login').html('<span style="margin-right:5px" class="spinner-border spinner-border-sm" aria-hidden="true">')
           },
           success: function() {
 
-           
+           // Se e-mail, senha correto e status ativo ele loga e recarrega a página
             location.reload();
 
           },
           complete:function(){
+            // Abilita o botão de logar e remove o spinner e add texto de "Enviar no botão"
             $('#btn-login').prop('disabled',false)
             $('#btn-login').html('Enviar')
 
           },
           error: function(response) {
+            // Retorna o erro de senha ou e-mail inválidos
             showModalMesage('error',response.responseJSON.title,response.responseJSON.message,'modal-login','email-login');
           }
         });
@@ -353,13 +368,16 @@ function ReenviarCodigoVerificacao(inputId)
 
  
 
+  // Validar código de verificação
   $('#btn-codigo-verificacao-email').click(()=>{
 
+    // Se o códiog do campo estiver vazio retorna modal de erro
     if(validField('codigo-verificacao-email', 'código','modal-verification-code') == false)
     {
       return ;
     }
 
+    // Faz requisição GET para validar enviando o código digitado pelo usuário
     $.ajax({
           type: "GET",
           url: "../web/ValidarCodigoEmail.php",
@@ -370,16 +388,19 @@ function ReenviarCodigoVerificacao(inputId)
           },
           success: function() {
 
+            // Recarrega a página caso o código esteja correto
             showModalMesage('success','Conta Verificada!','Parabéns, seu cadastro foi concluído com sucesso!','','','http://localhost/plataforma-ouvidoria/views/');
-            //location.reload();
 
           },
           complete:function(){
+
+            // Remove o spinner do btão e add o html nele de "Enviar"
             $('#btn-codigo-verificacao-email').prop('disabled',false)
             $('#btn-codigo-verificacao-email').html('Enviar')
 
           },
           error: function(response) {
+            // Retorna modal de erro no código de verificação
             showModalMesage('error',response.responseJSON.title,response.responseJSON.message,'modal-verification-code');
           }
         });
@@ -387,7 +408,7 @@ function ReenviarCodigoVerificacao(inputId)
 
     $('#btn-logout').click(()=>{
 
-// requisição para sair (eu colocaria o link no href mas no texto do desafio diz que toda comunição tem q ser via AJAX :(   )
+    // requisição para sair  
       $.ajax({
         type: "GET",
         url: "../web/logout.php",
@@ -477,6 +498,7 @@ function ReenviarCodigoVerificacao(inputId)
 
        
         <?php 
+        // Se usuário estiver logado adiciona o dropdown de ouvidoria
         if($user['auth'] == true)
         {
           echo '<li class="nav-item dropdown">';
@@ -493,6 +515,7 @@ function ReenviarCodigoVerificacao(inputId)
       
       </ul>
 
+      <!-- Se o usuário não  estiver logado add o botão de login e cadastrar-se, se sim ele adiciona o html do Dropdpwn de usuários -->
       <?php if($user['auth'] == false){
                echo '<button class="btn btn-light me-2" data-bs-target="#modal-login" data-bs-toggle="modal">Entrar</button>';
                 echo '<button class="btn btn-outline-light" data-bs-target="#modal-create-account" data-bs-toggle="modal">Cadastrar-se</button>';

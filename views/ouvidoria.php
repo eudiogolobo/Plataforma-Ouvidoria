@@ -1,5 +1,7 @@
 <?php 
+// Retoma sessão e inclui arquivos (verificação se está logado e header)
 session_start();
+
 require_once __DIR__ ."/../Web/isLogged.php";
 require_once __DIR__ ."/layout/layoutStart.php";
 ?>
@@ -39,114 +41,90 @@ require_once __DIR__ ."/layout/layoutStart.php";
 
 
 <script>
+    // Quando o documento for totalmente carregado
 $(document).ready(()=>{
 
-$('#send-attachments').click(()=>{
+         // add class active ao item do menu principal
+         $('#link-ouvidoria').addClass('active');
 
-    if(validField('description','descrição do caso') == false || validField('service_type','tipo de serviço afetado') == false || validField('files','anexos') == false)
-    {
-        return false;
-    }
-    var form = $('#form')[0]; // You need to use standard javascript object here
-    var formData = new FormData(form);  
-    
+         // Quando clicar em enviar uma nova ouvidoria
+            $('#send-attachments').click(()=>{
 
- 
-/*-------------------------------- FIM BASE64 -----------------------------------------*/
-$.ajax({
-        type: "POST",
-        enctype: 'multipart/form-data',
-        url: "../web/createOmbudsman.php",
-        data:formData,
-        processData: false,
-        contentType: false,
-        cache: false,
-        timeout: 600000,
-        beforeSend:function(){
-     
-        },
-        success: function(response) {
-            showModalMesage('success','Mensagem!', 'Enviado com sucesso!','','');
-            $('#files').val('');
-            $('#service_type').val('');
-            $('#description').val('');
+                // válida os campos para ná serem em brancos
+                if(validField('description','descrição do caso') == false || validField('service_type','tipo de serviço afetado') == false || validField('files','anexos') == false)
+                {
+                    return false;
+                }
 
-            $('#description').removeClass();
-            $('#files').removeClass();
-            $('#service_type').removeClass();
+                // Pega o form
+                var form = $('#form')[0];
 
-            $('#description').addClass('form-control');
-            $('#files').addClass('form-control');
-            $('#service_type').addClass('form-control');
-
-
-
-            $('#description').focus();
-        },
-        complete:function(){
-      
-
-        },
-        error: function(response) {
-            
-            showModalMesage('error',response.responseJSON.title,response.responseJSON.message,'','files');
-            
-        }
-    });
-
-    
-  
-})
-
-})
-
-
-        // add class active ao item do menu principal
-
-        $('#link-ouvidoria').addClass('active');
-
-            function base64img(obj)
-            {
-                let files64 = ['files']
-              
-                 files = $(obj)[0].files
-
-                 console.log(files)
-                 $.each(files, function(index, value){
-                    var reader = new FileReader()
-                    console.log(index)
-                    reader.readAsDataURL($(obj)[0].files[index])
-                    reader.onload = function(){
-
-                    files64[index] = reader.result
-
-                    }
-
-                })
-
-            
-
-               
-                console.log(files64)
-
-                //obj.files.forEach(element => {
-                    
-                //    var reader = new FileReader()
-
-                //    reader.readAsDataURL(obj.files[0])
-                //    reader.onload = function(){
-                //    alert(reader.result)
-                 //   $('#content-img').append('<img src="' + reader.result + '" alt="">');
-                //}
-
-                //});
-               
+                // Cria um objeto do tipo FormData
+                var formData = new FormData(form);  
                 
-                //let clean = atob(b64)
-                //alert(clean)
-            }
-         
-        </script>
+
+            
+          // Requisição para salvar a nova ouvidoria aberta
+            $.ajax({
+                    type: "POST",
+                    enctype: 'multipart/form-data',
+                    url: "../web/createOmbudsman.php",
+                    data:formData,
+                    processData: false,
+                    contentType: false,
+                    cache: false,
+                    timeout: 600000,
+                    beforeSend:function(){
+                
+                    },
+                    success: function(response) {
+
+                        // Se der tudo certo retorna o modal de sucesso
+                        showModalMesage('success','Mensagem!', 'Enviado com sucesso!','','');
+
+                        // limpas os campos
+                        $('#files').val('');
+                        $('#service_type').val('');
+                        $('#description').val('');
+
+                        // remove as classse (para remover o "is-valid" e "is-invalid")
+                        $('#description').removeClass();
+                        $('#files').removeClass();
+                        $('#service_type').removeClass();
+
+                        //add as classes do form control
+                        $('#description').addClass('form-control');
+                        $('#files').addClass('form-control');
+                        $('#service_type').addClass('form-control');
+
+                        // manda o focu para o primeiro campo
+                        $('#description').focus();
+                    },
+                    complete:function(){
+                
+
+                    },
+                    error: function(response) {
+                        
+                        // Abre o modal com a mensagem de erro passada pelo back-end
+                        // foca no campo files
+                        showModalMesage('error',response.responseJSON.title,response.responseJSON.message,'','files');
+                        
+                    }
+                });
+
+                
+            
+            })
+           
+
+})
 
 
+
+   
+
+</script>
+
+<!-- INCLUI O FIM DO HTML -->
 <?php require_once __DIR__ ."/layout/layoutEnd.php" ?>

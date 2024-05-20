@@ -15,10 +15,9 @@ class EnviarEmail
     function __construct()
     {
         $this->mail = new PHPMailer(true);
-        
-         
     }
 
+    // Função para enviar e-mail
     function sendEmails($emailTo, $name, $codigo_verificacao)
     {
         try {
