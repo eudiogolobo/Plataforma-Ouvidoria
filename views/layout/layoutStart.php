@@ -28,7 +28,6 @@ $user = ['auth'=>false,'userName'=>'',];
     <!-- CDN mask -->
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery.maskedinput/1.4.1/jquery.maskedinput.min.js"></script>
     <script src="../public/Js/JsStart.js" defer></script>
-
     <link rel="stylesheet" href="../public/css/layout.css">
 
     <title></title>
@@ -67,14 +66,21 @@ function ReenviarCodigoVerificacao(inputId)
 
     $(document).ready(()=>{
 
-    // Já vejo s é mobile 
-    // Muda a classe do Dropdwon do menu superior direito
-    // se for celular para alinhar à esquerda
 
-      if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-       $('#dropdown-menu-header').removeClass('dropdown-menu-end')
-       $('#dropdown-menu-header').addClass('dropdown-menu-start')
-    }
+  // Muda a classe do Dropdwon do menu superior direito de acordo com o tamanho do browser
+    // Porque no celular/ tablet o dropdown tava ficando no fim 
+    // e só queria deixar no fim em computador...
+    if($(window).width() < 991)
+      {
+     
+        $('#dropdown-menu-header').removeClass('dropdown-menu-end')
+        $('#dropdown-menu-header').addClass('dropdown-menu-start')
+
+      }else{
+        $('#dropdown-menu-header').addClass('dropdown-menu-end')
+        $('#dropdown-menu-header').removeClass('dropdown-menu-start')
+
+      }
 
     // Se redimenssionar o tamanho do browser ele 
     // Muda a classe do Dropdwon do menu superior direito
@@ -353,7 +359,6 @@ function ReenviarCodigoVerificacao(inputId)
 
  
   })
-
   
   $('#btn-login').click(()=>{
 
@@ -553,7 +558,7 @@ function ReenviarCodigoVerificacao(inputId)
               echo '</button>';
               echo '<div id="dropdown-menu-header" class="dropdown-menu dropdown-menu-end p-1" style="max-width: 100px;">';
                 
-              echo '<button style="text-align: left; width: 100%;" class="btn btn-dark">Meu perfil</button>';
+              echo '<button id="btn-modal-my-perfil" style="text-align: left; width: 100%;" class="btn btn-dark" data-bs-target="#modal-my-user" data-bs-toggle="modal">Meu perfil</button>';
               echo  '<button id="btn-logout" style="text-align: left; width: 100%;" class="btn btn-dark">Sair</button>';
                 
                 
@@ -750,4 +755,31 @@ function ReenviarCodigoVerificacao(inputId)
   </div>
 </div>
 <!-- FIM Modal LOGIN -->
+
+<!-- COMEÇO MODAL DE MEU PERFIL DE USUÁRIO -->
+<div class="modal fade modal-pq" id="modal-my-user" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-my-user-body">
+          <div class="row my-5 justify-content-center ">
+             
+              <div class="col-8 col-sm-8 col-md-8">
+                    <h1 id="modal-login-title" class="modal-title fs-5">Meu Perfil</h1>
+                </div>
+                <div class="col-2 col-sm-1 col-md-1" style="display: flex; align-items: center;">
+                    <button type="button" style="margin-left: auto;" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="col-10 col-sm-9 col-md-9">
+                  <hr>
+                </div>
+
+                <div id="data-my-user" class="col-10 col-sm-9 col-md-9 mt-3">
+                    
+                </div>
+              </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- FIM MODAL DE MEU PERFIL DE USUÁRIO -->
     

@@ -1,7 +1,29 @@
       
+
+// Carrega o modal My User com as informações do usuário
+    
+$('#btn-modal-my-perfil').click(function(){
+
+  $.ajax({
+  url: "../web/loadMyUser.php",
+  type: "GET",
+  success: (response)=>{
+
+    console.log(response)
+    // Divido o valor da data em um array inerto o array e junto tudo adicionando '/' na junção
+    const dateNasc = response.data[0].date_birth.split('-').reverse().join('/'); 
+
+    htmlMyUser = '<p>Dt. Nasc: '+dateNasc+'</p> </p><p>Telefone: '+response.data[0].telephone+'</p><p>WhatsApp: '+response.data[0].whatsapp+'</p><p>Cidade: '+response.data[0].city+'</p><p>UF: '+response.data[0].fu+'</p>';
+    $('#data-my-user').html(htmlMyUser)
+
+  },
+  erro: ()=>{
+    console.log("Erro ao carregar informações do usuário...")
+  }
+  })
+  })
+
 /*------------------------------------------ FUNÇÕES LayoutStart  -----------------------------------------*/
-
-
 
 
 /*------------------------------------------ INICIO ValidEmail -----------------------------------------*/
