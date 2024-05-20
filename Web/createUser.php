@@ -5,7 +5,7 @@
  {
     // Incluo meus arquivos
     include_once "../configuration/connect.php";
-    include_once __DIR__."/EnviarCodigoVerificacao.php";
+    include_once __DIR__."/Mail/EnviarCodigoVerificacao.php";
 
     // Retomo sessão
     session_start();
@@ -44,7 +44,7 @@
     $result->bindValue(":telephone", $telephone);
     $result->bindValue(":whatsapp", $whatsapp);
     $result->bindValue(":password", hash('sha256', $password));
-    $result->bindValue(":password_confirmation", $passwordComnfirm);
+    $result->bindValue(":password_confirmation", hash('sha256', $passwordComnfirm));
     $result->bindValue(":name", $name);
     $result->bindValue(":status", 'INATIVO');
     $result->bindValue(":city", $city);

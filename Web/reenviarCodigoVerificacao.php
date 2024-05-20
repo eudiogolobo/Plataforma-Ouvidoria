@@ -5,7 +5,7 @@ if(isset($_POST['email']) && isset($_POST['name']))
 {
 
 // Incluo meu arquivo para Reenviar o código de verificação para o e-mail do usuário
-include_once __DIR__."/enviarCodigoVerificacao.php";
+include_once __DIR__."/Mail/EnviarCodigoVerificacao.php";
 
 // Instâncio a classe EnviarCodigoVerificacao
 $enviar = new EnviarCodigoVerificacao();

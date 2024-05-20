@@ -279,7 +279,7 @@ function ReenviarCodigoVerificacao(inputId)
     // Verifica se senha é maior que 8 caracteres
     if( $('#password').val().length < 8)
     {
-      showModalMesage('error','Senha inválida','A senha deve ter no mínimo 8 caracteres.','modal-create-password');
+      showModalMesage('error','Senha inválida','A senha deve ter no mínimo 8 caracteres.','modal-create-password','password');
       $('#password').focus()
       return
     }
@@ -287,7 +287,7 @@ function ReenviarCodigoVerificacao(inputId)
     // Verifica se senha e confirmação de senha são iguais
     if( $('#password').val() != $('#password-comnfirm').val())
     {
-      showModalMesage('error','Senha inválida','A senha e a confirmação de senha não são iguais.','modal-create-password');
+      showModalMesage('error','Senha inválida','A senha e a confirmação de senha não são iguais.','modal-create-password','password-comnfirm');
       $('#password').focus()
       return
     }
@@ -407,7 +407,7 @@ function ReenviarCodigoVerificacao(inputId)
     // Faz requisição GET para validar enviando o código digitado pelo usuário
     $.ajax({
           type: "GET",
-          url: "../web/ValidarCodigoEmail.php",
+          url: "../web/validarCodigoEmail.php",
           data: {'code' : $('#codigo-verificacao-email').val()},
           beforeSend:function(){
             $('#btn-codigo-verificacao-email').prop('disabled',true)

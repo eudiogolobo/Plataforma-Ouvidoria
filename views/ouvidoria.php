@@ -76,13 +76,13 @@ $(document).ready(()=>{
                 // true daí retorno o erro
                 tamanhoMaximoEx = false
                 // pegar a posição do arquivo que ultrapassar o limite (2Mb)
-                posTamMaxExc = 0
+                nameTamMaxExc = ''
 
                 // Variável - se algum arquivo ter extensão não permitida ele fica
                 // true
                 extensaoInvalida = false
                 // pegar a posição do arquivo que ter extensão não permitida
-                pnameExtensaoInvalida = 0
+                nameExtensaoInvalida = ''
               
                 const extensoesPermitidas = ['xlsx','xls','csv','txt','pdf','rar','zip','jpg','jpeg','png']
 
@@ -92,14 +92,14 @@ $(document).ready(()=>{
 
                     if (fileSize > 2) {
                         tamanhoMaximoEx = true
-                        posTamMaxExc = index+1
+                        nameTamMaxExc = item.name
                     }
                     arrayName =  item.name.split('.')
                     extensao = arrayName[arrayName.length-1]
-                    if( $.inArray(extensao, extensoesPermitidas) == -1 )
+                    if( $.inArray(extensao.toLowerCase(), extensoesPermitidas) == -1 )
                     {
                         extensaoInvalida = true
-                        pnameExtensaoInvalida = item.name
+                        nameExtensaoInvalida = item.name
                     }
                     
                     
@@ -109,14 +109,14 @@ $(document).ready(()=>{
                 // se algum arquivo ultrapassar 2Mb ele retorna a mesagem de erro junto com a posição do arquivo
                 if(tamanhoMaximoEx)
                 {
-                    showModalMesage('error','Envio Negado','Arquivo '+posTamMaxExc+' muito grande! Tamaho máximo permitido 2Mb.','','files');
+                    showModalMesage('error','Envio Negado','Arquivo '+nameTamMaxExc+' muito grande! Tamaho máximo permitido 2Mb.','','files');
                     return 
                 }
 
                 // retorna erro se algum arquivo tiver extensão não permitida
                 if(extensaoInvalida)
                 {
-                    showModalMesage('error','Envio Negado','Extensão do arquivo '+pnameExtensaoInvalida+' não permitida. Permitidas: xlsx, xls, csv, txt, pdf, rar, zip, jpg, jpeg, png.','','files');
+                    showModalMesage('error','Envio Negado','Extensão do arquivo '+nameExtensaoInvalida+' não permitida. Permitidas: xlsx, xls, csv, txt, pdf, rar, zip, jpg, jpeg, png.','','files');
                     return 
                 }
 
