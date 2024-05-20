@@ -3,12 +3,12 @@
 include_once __DIR__."/Mail/EnviarEmail.php";
 include_once __DIR__."/../configuration/connect.php";
 
+// Classe para realizar os envios de código de verificação
 class EnviarCodigoVerificacao
 {
     private $database;
 
- 
-
+    // Qunado for instânciada já conecta ao Database
     public function __construct()
     {
         $this->database = new Database();
@@ -22,18 +22,24 @@ class EnviarCodigoVerificacao
           }
     }
 
+    // Função para enviar o código de verificação
     public function EnviarCodigo($email_form_cad, $name)
     {
+        // Retoma a sessão
         session_start();
+
+        // Se existir algum e-mail de verificção pendente já vou excluir
+        // pois se o usuário se cadastrar num dia e depois de dois dias vir 
+        // concluir a verificação de conta, fica mais fácil para ele achar o novo
+        // e-mail enviado do que procurar um e-mail de dois dias atrás...
         $resul =  $this->database->pdo->prepare('DELETE FROM email_confirmation WHERE email = :email ');
         $resul->bindValue(":email", $email_form_cad);
         $resul->execute();
 
-        echo var_dump($resul);
         //gero um código
         $cod_verification = rand(100000,999999);
 
-        // gravo o id da sessao caso o usuario ja va colocar o codigo, caso ele perca a sessao ele pode ativar a conta atraves do email e do codigo...
+        // Faço a inserção no Database com os valores do e-mail, código gerado e o valor da sessão atual 
         $result = $this->database->pdo->prepare('INSERT INTO email_confirmation (session_id, code_verification, email) values (:session_id, :code_verification, :email)');
         $result->bindValue(":session_id", session_id());
         $result->bindValue(":code_verification",  $cod_verification);

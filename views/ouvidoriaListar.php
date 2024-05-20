@@ -20,7 +20,8 @@ include_once __DIR__."/layout/layoutStart.php";
             
             <hr>
             <div class="col-12 col-sm-12 col-md-12 col-lg-12">
-                <table id="table-files" class="table table-striped table-hover">
+                <table id="table-files" class="table table-striped table-hover caption-top">
+                <caption id="count-data-files"></caption>
                     <thead >     
                         <tr>
                             <th class="d-none d-sm-table-cell">Nome</th>
@@ -41,7 +42,6 @@ include_once __DIR__."/layout/layoutStart.php";
 </div>
 <!-- FIM MODAL DE FILES -->
 
-<button id="btn-baixar" type="button" style="margin-left: auto;" class="btn btn-success">Baixar</button>
 <script>
     
 </script>
@@ -55,7 +55,7 @@ include_once __DIR__."/layout/layoutStart.php";
             <input id="textSearch" type="text" class="form-control" placeholder="Descrição, serviço afetado...">
         </div>
         <div class="col-2 col-sm-1 col-md-1 col-lg-1" style="align-items: end; display: flex;">
-            <button id="search" class="btn btn-success" style="height: 38px;">
+            <button title="Pesquisar" id="search" class="btn btn-success" style="height: 38px;">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
                     <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
                 </svg>
@@ -64,7 +64,8 @@ include_once __DIR__."/layout/layoutStart.php";
 
         <div class="col-12 col-sm-12 col-md-12 col-lg-12">
            <p class="mt-5" id="p-status">Nenhum resultado encontrado...</p>
-            <table id="table-search-ombudsman" class="table table-striped table-hover mt-5">
+            <table id="table-search-ombudsman" class="table table-striped table-hover mt-5 caption-top">
+            <caption id="count-data-search"></caption>
                 <thead >     
                     <tr>
                         <th class="d-none d-sm-table-cell">Descrição do Caso</th>
@@ -109,6 +110,7 @@ include_once __DIR__."/layout/layoutStart.php";
 
                     htmlData += "</tr>";
                     $('#data-files').append(htmlData)
+                    $('#count-data-files').html('Total de anexos: '+response.data.length)
                     })
                
             },
@@ -168,11 +170,12 @@ include_once __DIR__."/layout/layoutStart.php";
 
                     htmlData += '<td>' + value.service_type + '</td>';
 
-                    htmlData += '<td style="justify-content:center;vertical-align: middle; ">  <button onclick="loadFilesOmbudsman('+value.id+')" data-bs-target="#modal-view-files" data-bs-toggle="modal" class="btn btn-secondary"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16"><path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/><path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"/></svg></button></td>';
+                    htmlData += '<td style="justify-content:center;vertical-align: middle; ">  <button title="Ver Anexos" onclick="loadFilesOmbudsman('+value.id+')" data-bs-target="#modal-view-files" data-bs-toggle="modal" class="btn btn-secondary"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16"><path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/><path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"/></svg></button></td>';
 
                     htmlData += "</tr>";
                     $('#data-search-ombudsman').append(htmlData)
                     })
+                    $('#count-data-search').html('Qtd. de resultados: '+response.data.length)
 
                 } else{
                     $('#data-search-ombudsman').html('')

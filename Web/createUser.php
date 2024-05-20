@@ -1,27 +1,31 @@
 
 <?php
 
- 
-include_once "../configuration/connect.php";
-include_once __DIR__."/EnviarCodigoVerificacao.php";
+ if(isset($_POST['name']) && isset($_POST['date-birth']) && isset($_POST['email']) && isset($_POST['telephone']) && isset($_POST['whatsapp']) && isset($_POST['password']) && isset($_POST['password_comnfirm']) && isset($_POST['city']) && isset($_POST['fu']))
+ {
+    // Incluo meus arquivos
+    include_once "../configuration/connect.php";
+    include_once __DIR__."/EnviarCodigoVerificacao.php";
 
- session_start();
+    // Retomo sessão
+    session_start();
 
 
-$name = $_POST['name'];
-$dateBirth = $_POST['date-birth'];
-$email_form_cad = $_POST['email'];
-$telephone = $_POST['telephone'];
-$whatsapp = $_POST['whatsapp'];
-$password = $_POST['password'];
-$passwordComnfirm = $_POST['password_comnfirm'];
-$city = $_POST['city'];
-$fu = $_POST['fu'];
+    // Passo os valores que veio do POST as variáveis
+    $name = $_POST['name'];
+    $dateBirth = $_POST['date-birth'];
+    $email_form_cad = $_POST['email'];
+    $telephone = $_POST['telephone'];
+    $whatsapp = $_POST['whatsapp'];
+    $password = $_POST['password'];
+    $passwordComnfirm = $_POST['password_comnfirm'];
+    $city = $_POST['city'];
+    $fu = $_POST['fu'];
 
-// prepara e executa o cadastro (Essa maneira com "prepare()" e "execute()" ajuda a evitar SQL Injection)
-
+    // Intâncio o Database
     $database = new Database();
 
+    // Faço a conexão ao Database
     try {
         $database->connection();
       } catch(PDOException $e) {
@@ -31,11 +35,10 @@ $fu = $_POST['fu'];
       }
    
       
-    
+    // Prepara e insere no Database as informações do novo usuário
     $result = $database->pdo->prepare('INSERT INTO users (status, date_birth, email, telephone, whatsapp, 
     password, password_confirmation,name, city, fu) values (:status, :date_birth, :email, :telephone, :whatsapp, 
     :password, :password_confirmation, :name , :city, :fu)');
-  
     $result->bindValue(":date_birth", $dateBirth);
     $result->bindValue(":email", $email_form_cad);
     $result->bindValue(":telephone", $telephone);
@@ -48,10 +51,15 @@ $fu = $_POST['fu'];
     $result->bindValue(":fu", $fu);
     $result->execute();
 
+    // Instâncio a classe EnviarCodigoVerificacao
     $enviarCodVerif = new EnviarCodigoVerificacao();
 
+    // Faço o envio do código de verificação para o e-mail cadastrado
     $enviarCodVerif->EnviarCodigo($email_form_cad, $name);
 
+
+
+ }
 
    
 
