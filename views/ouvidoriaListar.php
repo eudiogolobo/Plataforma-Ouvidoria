@@ -12,7 +12,7 @@ include_once __DIR__."/layout/layoutStart.php";
       <div class="modal-body">
         <div class="content p-4 row g-3 m-3">
             <div class="col-10 col-sm-11 col-md-11">
-              <h1 class="modal-title fs-5" id="exampleModalLabel">Visualizar Anexos</h1> 
+              <h1 class="modal-title fs-5" id="exampleModalLabel">Anexos</h1> 
             </div>
             <div class="col-2 col-sm-1 col-md-1" style="display: flex; align-items: center;">
                 <button type="button" style="margin-left: auto;" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -20,7 +20,7 @@ include_once __DIR__."/layout/layoutStart.php";
             
             <hr>
             <div class="col-12 col-sm-12 col-md-12 col-lg-12">
-                <table id="table-files" class="table table-striped table-hover mt-5">
+                <table id="table-files" class="table table-striped table-hover">
                     <thead >     
                         <tr>
                             <th class="d-none d-sm-table-cell">Nome</th>
@@ -103,9 +103,9 @@ include_once __DIR__."/layout/layoutStart.php";
 
                     htmlData += '<td>' + value.name + '</td>';
 
-                    htmlData += '<td>' + value.extension + '</td>';
+                    htmlData += '<td>.' + value.extension + '</td>';
 
-                    htmlData += '<td style="justify-content:center;vertical-align: middle; ">  <button data-bs-target="#modal-view-files" data-bs-toggle="modal" class="btn btn-secondary"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16"><path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/><path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"/></svg></button></td>';
+                    htmlData += '<td style="justify-content:center;vertical-align: middle; ">  <button title="Baixar" onclick="baixarArq64(\''+value.name+'\' , \''+value.extension+'\' , \''+value.attachment+'\' )" style="display:flex;justify-content:center;padding:5px 5px;margin:0" class="btn btn-success"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-file-earmark-arrow-down-fill" viewBox="0 0 16 16"><path d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0M9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1m-1 4v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1 .708-.708L7.5 11.293V7.5a.5.5 0 0 1 1 0"/></svg></button></td>';
 
                     htmlData += "</tr>";
                     $('#data-files').append(htmlData)
@@ -117,18 +117,21 @@ include_once __DIR__."/layout/layoutStart.php";
             },
         })
     }
-    $(document).ready(()=>{
 
-        function baixarArq64(name, extensao, base64)
+    function baixarArq64(name, extensao, base64)
         {
             var link = document.createElement("a");
             document.body.appendChild(link);
             link.setAttribute("type", "hidden");
-            link.href = "data:text/plain;base64," + result;
-            link.download = "data.zip";
+            link.href = "data:text/plain;base64," + base64;
+            link.download = name+"."+extensao;
             link.click();
             document.body.removeChild(link);
         }
+
+    $(document).ready(()=>{
+
+       
 
         $('#btn-baixar').click(()=>{
 
