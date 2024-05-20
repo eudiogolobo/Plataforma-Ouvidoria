@@ -35,11 +35,11 @@ if(isset($_FILES["files"]) &&  isset($_POST['service_type']) && isset($_POST['de
 
                 // verifica a extensão do arquivo de acordo com os permitidos no array $_verifica['extensoes']
                 // retorna um erro se não for nenhuma das extensões setadas em $_verifica['extensoes']
-                if (array_search($extensao, $_verifica['extensoes']) === false) {
+                if (array_search(strtolower($extensao), $_verifica['extensoes']) === false) {
                 
                     header('HTTP/1.1 500 Internal Server');
                     header('Content-Type: application/json; charset=UTF-8');
-                    die(json_encode(array('title'=>'Envio Negado','message' => "Tipo(s) de arquivo(s) não suportado. \n\n Suportado: (xlsx, xls, csv, txt, pdf, rar, zip, jpg, jpeg, png).")));	
+                    die(json_encode(array('title'=>'Envio Negado','message' => "Tipo(s) de arquivo(s) não suportado. Suportado: (xlsx, xls, csv, txt, pdf, rar, zip, jpg, jpeg, png).")));	
                 }
             
                 // Faz a verificação do tamanho do arquivo. Tem que ser menor que 2Mb setado em $_verifica['tamanho']

@@ -45,19 +45,13 @@ function ReenviarCodigoVerificacao(inputId)
             type: "POST",
             url: "../web/reenviarCodigoVerificacao.php",
             data: {'email' : $('#email').val(), 'name': $('#name').val()},
-            beforeSend:function(){
-            
-            },
             success: function() {
 
-
+              console.log('e-mail reenviado...')
             },
-            complete:function(){
            
-
-            },
             error: function(response) {
-              
+              console.log('erro ao reenviar e-mail...')
             }
           });
     
@@ -72,6 +66,34 @@ function ReenviarCodigoVerificacao(inputId)
 
 
     $(document).ready(()=>{
+
+    // Já vejo s é mobile 
+    // Muda a classe do Dropdwon do menu superior direito
+    // se for celular para alinhar à esquerda
+
+      if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+       $('#dropdown-menu-header').removeClass('dropdown-menu-end')
+       $('#dropdown-menu-header').addClass('dropdown-menu-start')
+    }
+
+    // Se redimenssionar o tamanho do browser ele 
+    // Muda a classe do Dropdwon do menu superior direito
+    // Porque no celular/ tablet o dropdown tava ficando no fim 
+    // e só queria deixar no fim em computador...
+    $(window).resize(()=>{
+      if($(window).width() < 991)
+      {
+     
+        $('#dropdown-menu-header').removeClass('dropdown-menu-end')
+        $('#dropdown-menu-header').addClass('dropdown-menu-start')
+
+      }else{
+        $('#dropdown-menu-header').addClass('dropdown-menu-end')
+        $('#dropdown-menu-header').removeClass('dropdown-menu-start')
+
+      }
+    })
+
 
          //pego o arquivo json com as cidades e UF
         $.getJSON("../public/json/cities_states.json", (data) => {
@@ -401,7 +423,7 @@ function ReenviarCodigoVerificacao(inputId)
           },
           error: function(response) {
             // Retorna modal de erro no código de verificação
-            showModalMesage('error',response.responseJSON.title,response.responseJSON.message,'modal-verification-code');
+            showModalMesage('error',response.responseJSON.title,response.responseJSON.message,'modal-verification-code','codigo-verificacao-email');
           }
         });
     })
@@ -486,7 +508,7 @@ function ReenviarCodigoVerificacao(inputId)
 <!-- COMEÇO NAVBAR -->
 <nav class="navbar navbar-expand-lg bg-primary border-body sticky-top" data-bs-theme="dark">
   <div class="container-fluid">
-  <a class="navbar-brand" href="{{route('main.index')}}"><img height="30px" src="../public/img/logo-prefa.png" width="200px" alt=""></a>
+  <a class="navbar-brand" href="./home.php"><img height="30px" src="../public/img/logo-prefa.png" width="200px" alt=""></a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -532,7 +554,6 @@ function ReenviarCodigoVerificacao(inputId)
               echo '<div id="dropdown-menu-header" class="dropdown-menu dropdown-menu-end p-1" style="max-width: 100px;">';
                 
               echo '<button style="text-align: left; width: 100%;" class="btn btn-dark">Meu perfil</button>';
-              echo '<button style="text-align: left; width: 100%; " class="btn btn-dark">Alterar senha</button>';
               echo  '<button id="btn-logout" style="text-align: left; width: 100%;" class="btn btn-dark">Sair</button>';
                 
                 
@@ -588,12 +609,12 @@ function ReenviarCodigoVerificacao(inputId)
                 <input type="email" class="form-control" id="email" id="email" placeholder="E-mail">
                 <div id="validation-email"></div>
             </div>
-            <div class="col-sm-3 col-lg-2">
+            <div class="col-sm-4 col-lg-2">
                 <label for="fu" class="form-label">UF</label>
                 <select name="fu" id="fu" class="form-select"></select>
                 <div id="validation-fu"></div>
             </div>
-            <div class="col-sm-9 col-lg-5">
+            <div class="col-sm-8 col-lg-5">
                 <label for="city" class="form-label">Cidade</label>
                 <select name="city" id="city" class="form-select"></select>
                 <div id="validation-city"></div>
@@ -619,7 +640,7 @@ function ReenviarCodigoVerificacao(inputId)
       
             <div class="row my-5 justify-content-center"> 
                 <div class="col-8 col-sm-8 col-md-8">
-                    <h1 class="modal-title fs-5">Senha</h1> 
+                    <h1 class="modal-title fs-5">Nova Senha</h1> 
                 </div>
                 <div class="col-2 col-sm-1 col-md-1" style="display: flex; align-items: center;">
                     <button type="button" style="margin-left: auto;" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -635,7 +656,7 @@ function ReenviarCodigoVerificacao(inputId)
             
             
                   <div class="col-10 col-sm-9 col-md-9 mt-4 mb-5">
-                      <label for="password_comnfirm" class="form-label">Confirm sua senha</label>
+                      <label for="password_comnfirm" class="form-label">Confirme sua senha</label>
                       <input type="text" class="form-control" id="password-comnfirm" name="password-comnfirm" placeholder="Confirme a senha">
                       <div id="validation-password-comnfirm"></div>
                   </div>
@@ -671,7 +692,7 @@ function ReenviarCodigoVerificacao(inputId)
                 </div>
 
                 <div class="col-10 col-sm-9 col-md-9 mt-3">
-                    <p style="font-size: medium;" class="mb-5">Enviamos um código de verificação para o seu e-mail.</p>
+                    <p style="font-size: medium;" class="mb-5">Enviamos um código de verificação para o seu endereço de e-mail.</p>
                     <label for="codigo-verificacao-email" class="form-label">Código</label>
                     <input type="text" class="form-control" id="codigo-verificacao-email" name="codigo-verificacao-email" placeholder="Código">
                     <div id="validation-codigo-verificacao-email" class="mb-5"></div>
