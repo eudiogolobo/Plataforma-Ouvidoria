@@ -29,7 +29,7 @@ $user = ['auth'=>false,'userName'=>'',];
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery.maskedinput/1.4.1/jquery.maskedinput.min.js"></script>
     <script src="../public/Js/JsStart.js" defer></script>
     <link rel="stylesheet" href="../public/css/layout.css">
-
+    <link rel="stylesheet" href="../public/css/animationSuccess.css">
     <title></title>
 </head>
 <body>
@@ -513,7 +513,7 @@ function ReenviarCodigoVerificacao(inputId)
 <!-- COMEÇO NAVBAR -->
 <nav class="navbar navbar-expand-lg bg-primary border-body sticky-top" data-bs-theme="dark">
   <div class="container-fluid">
-  <a class="navbar-brand" href="./home.php"><img height="30px" src="../public/img/logo-prefa.png" width="200px" alt=""></a>
+  <a class="navbar-brand" href="./home.php"><img height="30px" src="../public/img/logo-prefa.png"  alt=""></a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -529,7 +529,7 @@ function ReenviarCodigoVerificacao(inputId)
         if($user['auth'] == true)
         {
           echo '<li class="nav-item dropdown">';
-          echo   '<button id="link-ouvidoria" class="nav-link dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Ouvidorias</button>';
+          echo   '<button id="link-ouvidoria" class="nav-link dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Ouvidoria</button>';
           echo    '<ul class="dropdown-menu">';
           echo      '<li><a  class="dropdown-item" href="./ouvidoria.php">Nova</a></li>';
           echo      '<li><a  class="dropdown-item" href="./ouvidoriaListar.php">Ver Minhas</a></li>';
@@ -773,8 +773,10 @@ function ReenviarCodigoVerificacao(inputId)
                   <hr>
                 </div>
 
-                <div id="data-my-user" class="col-10 col-sm-9 col-md-9 mt-3">
-                    
+                <div class="col-10 col-sm-9 col-md-9 mt-3">
+                    <p><strong>Nome:</strong> <?php if(isset($_SESSION['userName'])){echo $_SESSION['userName'];}?>  </p>
+                    <p><strong>E-mail:</strong> <?php if(isset($_SESSION['email'])){echo $_SESSION['email'];} ?></p>
+                  <div id="data-my-user" ></div>
                 </div>
               </div>
       </div>

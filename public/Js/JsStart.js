@@ -13,7 +13,7 @@ $('#btn-modal-my-perfil').click(function(){
     // Divido o valor da data em um array inerto o array e junto tudo adicionando '/' na junção
     const dateNasc = response.data[0].date_birth.split('-').reverse().join('/'); 
 
-    htmlMyUser = '<p>Dt. Nasc: '+dateNasc+'</p> </p><p>Telefone: '+response.data[0].telephone+'</p><p>WhatsApp: '+response.data[0].whatsapp+'</p><p>Cidade: '+response.data[0].city+'</p><p>UF: '+response.data[0].fu+'</p>';
+    htmlMyUser = '<p><strong>Dt. Nasc:</strong> '+dateNasc+'</p><p><strong>Telefone:</strong> '+response.data[0].telephone+'</p><p><strong>WhatsApp:</strong> '+response.data[0].whatsapp+'</p><p><strong>Cidade:</strong> '+response.data[0].city+'</p><p><strong>UF:</strong> '+response.data[0].fu+'</p>';
     $('#data-my-user').html(htmlMyUser)
 
   },

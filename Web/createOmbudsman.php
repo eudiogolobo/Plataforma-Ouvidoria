@@ -14,7 +14,7 @@ if(isset($_FILES["files"]) &&  isset($_POST['service_type']) && isset($_POST['de
                             
         // se a quantidade de files enviada for maior que 9 ele retorna um erro pois 
         // só vou deixar 9 anexos...
-        if(count($_FILES["files"]["name"]) >= 10)
+        if(count($_FILES["files"]["name"]) > 9)
         {
             header('HTTP/1.1 500 Internal Server');
             header('Content-Type: application/json; charset=UTF-8');

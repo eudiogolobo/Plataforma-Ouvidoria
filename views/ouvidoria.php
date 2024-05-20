@@ -44,11 +44,20 @@ require_once __DIR__ ."/layout/layoutStart.php";
     // Quando o documento for totalmente carregado
 $(document).ready(()=>{
 
+     $('#files').change(function(e){
+
+      
+                
+
+     })
+             
+
+
          // add class active ao item do menu principal
          $('#link-ouvidoria').addClass('active');
 
          // Quando clicar em enviar uma nova ouvidoria
-            $('#send-attachments').click(()=>{
+        $('#send-attachments').click(()=>{
 
                 // válida os campos para ná serem em brancos
                 if(validField('description','descrição do caso') == false || validField('service_type','tipo de serviço afetado') == false || validField('files','anexos') == false)
@@ -60,8 +69,64 @@ $(document).ready(()=>{
                 var form = $('#form')[0];
 
                 // Cria um objeto do tipo FormData
-                var formData = new FormData(form);  
-                
+                var formData = new FormData(form); 
+
+        
+                // Variável - se algum arquivo ultrapassar 2mb ele fica
+                // true daí retorno o erro
+                tamanhoMaximoEx = false
+                // pegar a posição do arquivo que ultrapassar o limite (2Mb)
+                posTamMaxExc = 0
+
+                // Variável - se algum arquivo ter extensão não permitida ele fica
+                // true
+                extensaoInvalida = false
+                // pegar a posição do arquivo que ter extensão não permitida
+                pnameExtensaoInvalida = 0
+              
+                const extensoesPermitidas = ['xlsx','xls','csv','txt','pdf','rar','zip','jpg','jpeg','png']
+
+                $.each($('#files')[0].files, function(index,item){
+
+                    fileSize = item.size / 1024 /1024;
+
+                    if (fileSize > 2) {
+                        tamanhoMaximoEx = true
+                        posTamMaxExc = index+1
+                    }
+                    arrayName =  item.name.split('.')
+                    extensao = arrayName[arrayName.length-1]
+                    if( $.inArray(extensao, extensoesPermitidas) == -1 )
+                    {
+                        extensaoInvalida = true
+                        pnameExtensaoInvalida = item.name
+                    }
+                    
+                    
+
+                })
+            
+                // se algum arquivo ultrapassar 2Mb ele retorna a mesagem de erro junto com a posição do arquivo
+                if(tamanhoMaximoEx)
+                {
+                    showModalMesage('error','Envio Negado','Arquivo '+posTamMaxExc+' muito grande! Tamaho máximo permitido 2Mb.','','files');
+                    return 
+                }
+
+                // retorna erro se algum arquivo tiver extensão não permitida
+                if(extensaoInvalida)
+                {
+                    showModalMesage('error','Envio Negado','Extensão do arquivo '+pnameExtensaoInvalida+' não permitida. Permitidas: xlsx, xls, csv, txt, pdf, rar, zip, jpg, jpeg, png.','','files');
+                    return 
+                }
+
+
+                // retorna erro se a quantidade de arquivos ultrapassar 9
+                if($('#files')[0].files.length > 9)
+                {
+                    showModalMesage('error','Envio Negado','Número máximo de arquivos permitidos por chamado 9 (nove).','','files');
+                    return 
+                }
 
             
           // Requisição para salvar a nova ouvidoria aberta

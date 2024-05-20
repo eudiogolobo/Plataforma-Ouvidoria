@@ -45,7 +45,7 @@ class Auth{
                 // Caso não exista nenhum registro ele retorna a mensagem de erro com senha ou email inválido...
                 header('HTTP/1.1 500 Internal Server');
                 header('Content-Type: application/json; charset=UTF-8');
-                return die(json_encode(array('title'=>'OPS','message' => 'E-mail ou senha inválido.', 'code' => 1000)));
+                return die(json_encode(array('title'=>'Ops...','message' => 'E-mail ou senha inválido.', 'code' => 1000)));
 
              }
 
