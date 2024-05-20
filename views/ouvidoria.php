@@ -75,6 +75,9 @@ $(document).ready(()=>{
                     cache: false,
                     timeout: 600000,
                     beforeSend:function(){
+
+                        $('#send-attachments').prop('disabled',true)
+                        $('#send-attachments').html('<span style="margin-right:5px" class="spinner-border spinner-border-sm" aria-hidden="true">')
                 
                     },
                     success: function(response) {
@@ -101,7 +104,9 @@ $(document).ready(()=>{
                         $('#description').focus();
                     },
                     complete:function(){
-                
+                        // Desabilita botão e remove spinner 
+                        $('#send-attachments').prop('disabled',false)
+                        $('#send-attachments').html('Enviar')
 
                     },
                     error: function(response) {
