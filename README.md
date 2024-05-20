@@ -1,5 +1,5 @@
 # Ouvidoria Online
-[![licence mit](https://img.shields.io/badge/licence-MIT-blue.svg)](./LICENSE)
+[![licence mit](https://img.shields.io/badge/licence-MIT-blue.svg)](./LICENSE.md)
 
 Projeto realizado à partir do desafio proposto pela empresa [Web Brain](https://www.webbrain.com.br/), visando projetar e programar uma plataforma de ouvidoria online para uma "prefeitura". Na parte de cadastro me inspirei na [Amazon Web Service](https://aws.amazon.com/pt/ses/), com etapas e tudo mais...
 
@@ -72,7 +72,7 @@ A prefeitura deseja implementar uma plataforma de ouvidoria online que permitir�
 
 ## License/Licença do Projeto
 
-- [MIT](./LICENSE)
+- [MIT](./LICENSE.md)
 
 ## Agradecimentos
 > Obrigado à você que está lendo e, a [Web Brain](https://www.webbrain.com.br/) pelo desafio!
