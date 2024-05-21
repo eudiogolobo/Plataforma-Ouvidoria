@@ -362,6 +362,11 @@ function ReenviarCodigoVerificacao(inputId)
   
   $('#btn-login').click(()=>{
 
+    if(validField('email-login','e-mail','modal-login') == false || validEmail('email-login','modal-login') == false)
+    {
+        return 
+    }
+
     // Faz requisição para logar
     $.ajax({
           type: "POST",

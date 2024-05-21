@@ -28,7 +28,7 @@ $('#btn-modal-my-perfil').click(function(){
 
 /*------------------------------------------ INICIO ValidEmail -----------------------------------------*/
 // funcao para validar email (vai ser utilizada no login e na criação de conta)
-function validEmail(inputEmail)
+function validEmail(inputEmail, idModal)
 {
     // modelo de como deve ser o email
     var filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
@@ -38,7 +38,7 @@ function validEmail(inputEmail)
     // e add a clase is-invalid no input e na div de mensagem do input
     if (!filter.test($('#'+inputEmail).val())) {
 
-        showModalMesage('error', 'E-mail inválido', 'Por favor, insira um e-mail válido.','modal-create-account','email')
+        showModalMesage('error', 'E-mail inválido', 'Por favor, insira um e-mail válido.',idModal,inputEmail)
         $('#'+inputEmail).removeClass('is-valid')
         $('#validation-'+inputEmail).removeClass('is-valid')
 
@@ -48,6 +48,14 @@ function validEmail(inputEmail)
 
 
         return false
+    }else{
+      $('#'+inputEmail).addClass('is-valid')
+      $('#validation-'+inputEmail).addClass('is-valid')
+
+      $('#'+inputEmail).removeClass('is-invalid')
+      $('#validation-'+inputEmail).removeClass('is-invalid')
+      $('#validation-'+inputEmail).html('Campo obrigatório.')
+
     }
 
     // se passar quer dizer q é válido
