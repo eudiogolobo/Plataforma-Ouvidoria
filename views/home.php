@@ -47,7 +47,7 @@ require_once __DIR__ ."/layout/layoutStart.php";
                 </ul>
             </li>
         </ul>
-        <h2 class="mt-5" style="text-decoration: underline;">Como abrir um chamada para ouvidoria:</h2>
+        <h2 class="mt-5" style="text-decoration: underline;">Como abrir uma chamada para ouvidoria:</h2>
         <ul class="mt-5">
             <li class="">
                 <h4>Passo 01:</h4>
@@ -88,7 +88,7 @@ require_once __DIR__ ."/layout/layoutStart.php";
                 <h4>Passo 01:</h4>
                 <ul style="list-style: none;" class="mt-2 mb-4">
                     <li>
-                        <p>Entre ou cadastre-se em nosso portal.Caso já tenha realizado o cadastro mas não terminou a etapa de verificação, tente se cadastrar com o mesmo e-mail para ser redirecionado para a verificação do mesmo.</p> 
+                        <p>Entre ou cadastre-se em nosso portal. Caso já tenha realizado o cadastro mas não terminou a etapa de verificação, tente se cadastrar com o mesmo e-mail para ser redirecionado para a verificação do mesmo.</p> 
                         <p class="mt-3"> (Opção entrar ou cadastrar-se no menu superior à direita) <br> <img style="background-color: black; padding: 2px;border-radius: 5px;" class="mt-2" width="500" src="../public/img/entrarCadastrar.png" alt=""></p>
                     </li>
                 </ul> 
@@ -133,8 +133,7 @@ require_once __DIR__ ."/layout/layoutStart.php";
                     <li>
                         <p>Click no ícone de Visualizar.</p>
                         <p class="mt-3"> <br> <img style="background-color: black; padding: 2px;border-radius: 5px;" class="mt-2" width="500" src="../public/img/ver-anexos.png" alt=""></p> 
-                        <p><img style="background-color: black; padding: 2px;border-radius: 5px;" class="mt-2" width="500" src="../public/img/menu-ver-minhas.png" alt=""></p>
-                    
+                       
                     </li>
                 </ul>   
             </li>
