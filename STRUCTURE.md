@@ -15,7 +15,7 @@
 ## Estrutura do Projeto
 
 - `./configuration` : Responsável pelo arquivo da Classe de conexão ao banco de dados
-- `./public` : Responsável pelas pastas públicas (`/css`, `/img`, `/Js`, `json`)
+- `./public` : Responsável pelas pastas públicas (`/css`, `/img`, `/Js`, `/json`)
    - `./public/css/animationSuccess.css` : Responsável pelo CSS que gera a animação de Check no modal de sucesso
     - `./public/Js/jsStart.js` : Responsável pelo arquivo Javascript que contêm as `functions` a serem utilizadas em todo o site
      - `./public/Js/cities_states.json` : Responsável pelo arquivo JSON que têm as informações de cidades por Estados
