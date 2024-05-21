@@ -12,15 +12,15 @@
 
 
     // Passo os valores que veio do POST as variáveis
-    $name = $_POST['name'];
+    $name = htmlspecialchars($_POST['name'], ENT_QUOTES, 'UTF-8');
     $dateBirth = $_POST['date-birth'];
-    $email_form_cad = $_POST['email'];
-    $telephone = $_POST['telephone'];
-    $whatsapp = $_POST['whatsapp'];
+    $email_form_cad = htmlspecialchars($_POST['email'], ENT_QUOTES, 'UTF-8');
+    $telephone = htmlspecialchars($_POST['telephone'], ENT_QUOTES, 'UTF-8');
+    $whatsapp = htmlspecialchars($_POST['whatsapp'], ENT_QUOTES, 'UTF-8');
     $password = $_POST['password'];
     $passwordComnfirm = $_POST['password_comnfirm'];
-    $city = $_POST['city'];
-    $fu = $_POST['fu'];
+    $city = htmlspecialchars($_POST['city'], ENT_QUOTES, 'UTF-8');
+    $fu = htmlspecialchars($_POST['fu'], ENT_QUOTES, 'UTF-8');
 
     // Intâncio o Database
     $database = new Database();

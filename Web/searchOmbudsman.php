@@ -11,7 +11,7 @@ if(isset($_GET['textSearch']))
     session_start();
 
     // Passo o valor que veio da requisição para a variável
-    $text = htmlspecialchars($_GET['textSearch']);
+    $text = htmlspecialchars($_GET['textSearch'], ENT_QUOTES, 'UTF-8');
 
 
     // Intâncio o Database

@@ -69,8 +69,8 @@ if(isset($_FILES["files"]) &&  isset($_POST['service_type']) && isset($_POST['de
 
 
         // recebo os valores da requisição POST
-        $description = $_POST['description'];
-        $service_type = $_POST['service_type'];
+        $description = htmlspecialchars($_POST['description'], ENT_QUOTES, 'UTF-8');
+        $service_type = htmlspecialchars($_POST['service_type'], ENT_QUOTES, 'UTF-8');
         $user_id = $_SESSION['id'];	
 
         // Faço a inserção dos valores na tabela ombudsman com PDO contra SQL Injection
