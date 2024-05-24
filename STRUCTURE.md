@@ -4,12 +4,14 @@
 
 - Servidor Apache
 - Banco de Dados MySQL
+- Versão do PHP maior que 7
 
 ### Como rodar na minha máquina?
 
 - Clone o projeto `git clone https://github.com/eudiogolobo/Plataforma-Ouvidoria` dentro do htdocs
 - Ligue o Servidor Apache e MySQL
 - Insira o arquivo SQL no banco de dados MySQL
+- Para não dar erro na classe PHPMailer ao enviar o código de verificação, baixe o [arquivo zip](https://github.com/PHPMailer/PHPMailer/archive/master.zip) do PHPMailer e cole todos os arquivos dentro da pasta `./vendor/phpmailer/phpmailer/` do projeto
 - Pronto 🔥🔥
 
 ## Estrutura do Projeto
