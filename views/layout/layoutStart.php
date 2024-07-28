@@ -31,6 +31,7 @@ $user = ['auth'=>false,'userName'=>'',];
     <link rel="stylesheet" href="../public/css/layout.css">
     <link rel="stylesheet" href="../public/css/animationSuccess.css">
     <title></title>
+  
 </head>
 <body>
 
