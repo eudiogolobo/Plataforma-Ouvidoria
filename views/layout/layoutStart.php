@@ -313,8 +313,7 @@ function ReenviarCodigoVerificacao(inputId)
           data: dataUser,
           beforeSend:function(){
            
-            // Abre modal de cadastro concluído
-             showModalMesage('success','Parabéns!','Seu cadastro foi realizado com sucesso!','modal-verification-code')
+            
              // Desabilita o botão de Próximo
              $('#btn-create-user').prop('disabled',true)
              // Add spinner 
@@ -342,6 +341,9 @@ function ReenviarCodigoVerificacao(inputId)
             $('#password-comnfirm').removeClass('is-valid')
             $('#city').removeClass('is-valid')
             $('#fu').removeClass('is-valid')
+
+            // Abre modal de cadastro concluído
+            showModalMesage('success','Parabéns!','Seu cadastro foi realizado com sucesso!','modal-verification-code')
           },
           complete:function(){
              // Abilita o Próximo, remove o spinner a add texto "Próximo"
@@ -352,7 +354,7 @@ function ReenviarCodigoVerificacao(inputId)
           error: function(response) {
             // Tratamento de erro
             showModalMesage('error',response.responseJSON.title,response.responseJSON.message,'modal-create-password');
-
+            
           }
         });
 

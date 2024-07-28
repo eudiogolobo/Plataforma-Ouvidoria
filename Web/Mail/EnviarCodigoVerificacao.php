@@ -25,8 +25,7 @@ class EnviarCodigoVerificacao
     // Função para enviar o código de verificação
     public function EnviarCodigo($email_form_cad, $name)
     {
-        // Retoma a sessão
-        session_start();
+       
 
         // Se existir algum e-mail de verificção pendente já vou excluir
         // pois se o usuário se cadastrar num dia e depois de dois dias vir 
@@ -48,7 +47,7 @@ class EnviarCodigoVerificacao
 
         // instacio a classe EnviarEmail para realizar o envio...
         $emailNew = new EnviarEmail();
-        $emailNew->sendEmails($email_form_cad,$name, $cod_verification);
+        return $emailNew->sendEmails($email_form_cad,$name, $cod_verification)  ? true : false;
 
     }
  
